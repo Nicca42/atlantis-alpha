@@ -13,6 +13,7 @@
     "deploy:local": "hardhat run scripts/sample-script.js --network localhost"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "4.3.2",
     "dotenv": "10.0.0",
     "ethers": "5.4.7",
     "hardhat": "2.6.4"
@@ -20,11 +21,11 @@
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-waffle": "2.0.1",
-    "hardhat-contract-sizer": "2.1.0",
-    "hardhat-gas-reporter": "1.0.4",
-    "solidity-coverage": "0.7.17",
+    "chai": "4.3.4",
     "ethereum-waffle": "3.4.0",
+    "hardhat-contract-sizer": "2.1.0",
     "hardhat-docgen": "1.1.2",
-    "chai": "4.3.4"
+    "hardhat-gas-reporter": "1.0.4",
+    "solidity-coverage": "0.7.17"
   }
 }
