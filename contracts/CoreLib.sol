@@ -7,4 +7,5 @@ library CoreLib {
     bytes32 constant public PROPS = keccak256("PROPOSALS");
     bytes32 constant public VOTE_WEIGHT = keccak256("VOTE_WEIGHT");
     bytes32 constant public VOTE_BOOTH = keccak256("VOTING_BOOTH");
+    bytes32 constant public VOTE_STORAGE = keccak256("VOTING_STORAGE");
 }

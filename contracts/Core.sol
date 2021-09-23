@@ -12,6 +12,8 @@ interface IExe {
 }
 
 contract Core {
+    bytes32 public constant IDENTIFIER = bytes32(keccak256("CORE"));
+
     struct Instance {
         address implementation;
         bytes4 functionSig;
@@ -27,6 +29,10 @@ contract Core {
     }
 
     constructor(address[] memory _instances) {}
+
+    function getInstance(bytes32 _key) external view returns(address) {
+        return ecosystem_[_key].implementation;
+    }
 
     function getContract(bytes32 _key) external view returns (address, bytes4) {
         return (
