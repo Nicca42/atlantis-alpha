@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "VoteStorage",
+  "sourceName": "contracts/VoteStorage.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220909703ae8dc8106f367c8e3bd7930dc535f2d350490caa0e9c5be21b4fed820a64736f6c63430008070033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220909703ae8dc8106f367c8e3bd7930dc535f2d350490caa0e9c5be21b4fed820a64736f6c63430008070033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
