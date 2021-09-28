@@ -38,8 +38,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Core.sol": {
-      "lastModificationDate": 1632433268835,
-      "contentHash": "0190ddebe0cbc6dbbdcc05290ef3cb84",
+      "lastModificationDate": 1632846158998,
+      "contentHash": "63f98a255daf8a07d6fc7b55021d017b",
       "sourceName": "contracts/Core.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -73,6 +73,7 @@
       ],
       "artifacts": [
         "Core",
+        "ICoord",
         "IExe"
       ]
     },
@@ -228,8 +229,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/CoreLib.sol": {
-      "lastModificationDate": 1632434870884,
-      "contentHash": "d1349564956485cce04b217077243422",
+      "lastModificationDate": 1632844939832,
+      "contentHash": "138eebbdf1b607209385502f5fbb75e9",
       "sourceName": "contracts/CoreLib.sol",
       "solcConfig": {
         "version": "0.8.7",

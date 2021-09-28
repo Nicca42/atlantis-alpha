@@ -4,6 +4,14 @@ pragma solidity 0.8.7;
 import "./CoreLib.sol";
 
 interface IExe {
+    /**
+     * @param   _exeID ID of the executable to get the data of. 
+     * @return  targets The array of target addresses. 
+     * @return  callData The array of calldata to execute at each address.
+     * @return  values The array of values (in native tokens) to pass through 
+     *          with each call. Note that these values are outside of any gas
+     *          requirements and costs. 
+     */
     function getExe(bytes32 _exeID) external view returns(
         address[] memory targets,
         bytes[] memory callData,
@@ -13,71 +21,97 @@ interface IExe {
 
 interface ICoord {
     /**
-     * @param   _propID ID of the proposal to execute. 
+     * @param   _exeID ID of the executable to check. 
      * @notice  This function will check that the specified proposal has reached
      *          quorum, and that it has passed. If the proposal has not reached
      *          quorum or has not passed this will return false. 
-     * @dev     This function will update the state for the proposal if it has
-     *          not already been marked as executable. 
+     * @dev     The reason we use Exe IDs here and not Prop IDs is that 
+     *          executables may be valid for execution outside of a proposal 
+     *          (e.g an approved recurring payment). If the exe is tied to a
+     *          proposal the coordinator will be able to look up and verify it's
+     *          executable status.
      */
-    function execute(uint256 _propID) external returns(bool);
-
-    // QS update to use just this. 
     function isExecutable(bytes32 _exeID) external view returns(bool);
 }
 
+/**
+ * @author  Veronica | @Nicca42 - GitHub | @vonnie610 - Twitter
+ * @title   Core DAO contract for an Atlantis DAO. 
+ * @notice  This contract is incredibly simple with very limited functionality. 
+ *          The "business logic" (voting, proposals, consensus etc) is done  
+ *          elsewhere, meaning the core contract will not need to be upgraded to  
+ *          increase functionality.
+ */
 contract Core {
+
+    //--------------------------------------------------------------------------
+    // STATE
+    //--------------------------------------------------------------------------
+
     bytes32 public constant IDENTIFIER = bytes32(keccak256("CORE"));
 
-    struct Instance {
-        address implementation;
-        bytes4 functionSig;
-    }
+    mapping(bytes32 => address) private ecosystem_;
 
-    mapping(bytes32 => Instance) private ecosystem_;
+    //--------------------------------------------------------------------------
+    // EVENTS
+    //--------------------------------------------------------------------------
+
+    event ImplementationChanged(
+        bytes32 key,
+        address oldImplementation,
+        address newImplementation
+    );
+
+    //--------------------------------------------------------------------------
+    // MODIFIERS
+    //--------------------------------------------------------------------------
 
     modifier onlyCore() {
         require(msg.sender == address(this), "Core: Only exes can modify");
         _;
     }
 
+    //--------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //--------------------------------------------------------------------------
+
     constructor(
         address _coord,
-        address _exes,
+        address _executables,
         address _props,
         address _voteWeight,
         address _votingBooth,
         address _voteStorage
     ) {
         _addContract(CoreLib.COORD, _coord);
-        _addContract(CoreLib.EXE, _exes);
+        _addContract(CoreLib.EXE, _executables);
         _addContract(CoreLib.PROPS, _props);
         _addContract(CoreLib.VOTE_WEIGHT, _voteWeight);
         _addContract(CoreLib.VOTE_BOOTH, _votingBooth);
         _addContract(CoreLib.VOTE_STORAGE, _voteStorage);
     }
 
-
     //--------------------------------------------------------------------------
     // VIEW & PURE FUNCTIONS
     //--------------------------------------------------------------------------
 
     function getInstance(bytes32 _key) external view returns(address) {
-        return ecosystem_[_key].implementation;
-    }
-
-    function getContract(bytes32 _key) external view returns (address, bytes4) {
-        return (
-            ecosystem_[_key].implementation,
-            ecosystem_[_key].functionSig
-        );
+        return ecosystem_[_key];
     }
 
     //--------------------------------------------------------------------------
     // PUBLIC & EXTERNAL FUNCTIONS
     //--------------------------------------------------------------------------
 
+    /**
+     * @param   _exeID ID of executable. 
+     * @notice  Executes the passed executable. The executable needs to be 
+     *          marked as executable on the coordinator. If the exe ID is not 
+     *          approved for execution on the coordinator the transaction will
+     *          fail. 
+     */
     function execute(bytes32 _exeID) external {
+        // NOTE does this need re-entrancy guard? 
         ICoord coord = ICoord(this.getInstance(CoreLib.COORD));
 
         require(
@@ -86,13 +120,13 @@ contract Core {
         );
 
         IExe exe = IExe(this.getInstance(CoreLib.EXE));
-
         // Gets the data for the executable
         (
             address[] memory targets,
             bytes[] memory callData,
             uint256[] memory values
         ) = exe.getExe(_exeID);
+
         // Executes each step of the executable
         for (uint256 i = 0; i < targets.length; i++) {
             (bool success, ) = targets[i].call{
@@ -113,11 +147,10 @@ contract Core {
 
     function addContract(
         bytes32 _key,
-        address _instance,
-        bytes4 _function
+        address _instance
     ) external onlyCore {
         require(
-            ecosystem_[_key].implementation == address(0),
+            ecosystem_[_key] == address(0),
             "Core: Use update to replace"
         );
         require(_instance != address(0), "Core: Cannot delete on add");
@@ -127,11 +160,10 @@ contract Core {
 
     function updateContract(
         bytes32 _key,
-        address _instance,
-        bytes4 _function
+        address _instance
     ) external onlyCore {
         require(
-            ecosystem_[_key].implementation != address(0),
+            ecosystem_[_key] != address(0),
             "Core: Cannot add on update"
         );
         require(_instance != address(0), "Core: Cannot delete on update");
@@ -143,7 +175,7 @@ contract Core {
         bytes32 _key
     ) external onlyCore {
         require(
-            ecosystem_[_key].implementation != address(0),
+            ecosystem_[_key] != address(0),
             "Core: already deleted"
         );
 
@@ -158,6 +190,12 @@ contract Core {
         bytes32 _key,
         address _instance
     ) internal {
-        ecosystem_[_key].implementation = _instance;
+        emit ImplementationChanged(
+            _key,
+            ecosystem_[_key],
+            _instance
+        );
+
+        ecosystem_[_key] = _instance;
     }
 }
