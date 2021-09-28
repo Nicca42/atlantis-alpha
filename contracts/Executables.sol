@@ -17,6 +17,12 @@ contract Executables {
 
     mapping(bytes32 => Exe) private dotExe_;
 
+    event MintExecutable(
+        bytes32 exeID,
+        address[] targets,
+        string description
+    );
+
     constructor(address _core) {
         core_ = ICore(_core);
         // NOTE this does not protect from malformed core modules, it prevents
@@ -106,6 +112,12 @@ contract Executables {
             description: _description,
             creator: msg.sender
         });
+
+        emit MintExecutable(
+            exeID,
+            _targets,
+            _description
+        );
 
         // TODO mint NFT token
     }

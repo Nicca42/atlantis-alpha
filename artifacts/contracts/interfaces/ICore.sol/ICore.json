@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "ICore",
-  "sourceName": "contracts/Executables.sol",
+  "sourceName": "contracts/interfaces/ICore.sol",
   "abi": [
     {
       "inputs": [],

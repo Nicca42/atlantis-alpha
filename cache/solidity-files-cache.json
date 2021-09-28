@@ -1,10 +1,49 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Coord.sol": {
-      "lastModificationDate": 1632222315564,
-      "contentHash": "6254c96d7888929c85e9cd1eca9e633a",
-      "sourceName": "contracts/Coord.sol",
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/BaseSystem.sol": {
+      "lastModificationDate": 1632848540649,
+      "contentHash": "844470adc07350cb6c494395ee6e884f",
+      "sourceName": "contracts/BaseSystem.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./CoreLib.sol",
+        "./interfaces/ICore.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "BaseSystem"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/CoreLib.sol": {
+      "lastModificationDate": 1632844939832,
+      "contentHash": "138eebbdf1b607209385502f5fbb75e9",
+      "sourceName": "contracts/CoreLib.sol",
       "solcConfig": {
         "version": "0.8.7",
         "settings": {
@@ -34,13 +73,13 @@
         "0.8.7"
       ],
       "artifacts": [
-        "Coord"
+        "CoreLib"
       ]
     },
-    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Core.sol": {
-      "lastModificationDate": 1632846158998,
-      "contentHash": "63f98a255daf8a07d6fc7b55021d017b",
-      "sourceName": "contracts/Core.sol",
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/interfaces/ICore.sol": {
+      "lastModificationDate": 1632847931901,
+      "contentHash": "54fa46c0c2a5acbff946f05085a233b6",
+      "sourceName": "contracts/interfaces/ICore.sol",
       "solcConfig": {
         "version": "0.8.7",
         "settings": {
@@ -65,21 +104,17 @@
           }
         }
       },
-      "imports": [
-        "./CoreLib.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "0.8.7"
       ],
       "artifacts": [
-        "Core",
-        "ICoord",
-        "IExe"
+        "ICore"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Executables.sol": {
-      "lastModificationDate": 1632434646708,
-      "contentHash": "9b053294f68b93a36f9e38af30b8536d",
+      "lastModificationDate": 1632867585624,
+      "contentHash": "d5853464db98519c9f9f3025c9528553",
       "sourceName": "contracts/Executables.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -106,14 +141,14 @@
         }
       },
       "imports": [
-        "./CoreLib.sol"
+        "./CoreLib.sol",
+        "./interfaces/ICore.sol"
       ],
       "versionPragmas": [
         "0.8.7"
       ],
       "artifacts": [
-        "Executables",
-        "ICore"
+        "Executables"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Proposals.sol": {
@@ -154,6 +189,195 @@
         "ICore",
         "IExe",
         "Proposals"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Core.sol": {
+      "lastModificationDate": 1632847597344,
+      "contentHash": "4b99b2e6f5d9f8d98ed2036f3458157e",
+      "sourceName": "contracts/Core.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./CoreLib.sol",
+        "./openZeppelin/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Core",
+        "ICoord",
+        "IExe"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/openZeppelin/Initializable.sol": {
+      "lastModificationDate": 1632847782126,
+      "contentHash": "8dcc3ccbc8bcbb09ed4efbc7ea4d0339",
+      "sourceName": "contracts/openZeppelin/Initializable.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Initializable"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Coord.sol": {
+      "lastModificationDate": 1632848022055,
+      "contentHash": "a6b86687e1971381c214ce582a7b5ec7",
+      "sourceName": "contracts/Coord.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/ICore.sol",
+        "./CoreLib.sol",
+        "./openZeppelin/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Coord"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/test/TestExecutable.sol": {
+      "lastModificationDate": 1632868385071,
+      "contentHash": "e2f13da480dae89cc501cb0681e4a2c9",
+      "sourceName": "contracts/test/TestExecutable.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "TestExecutable"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/VoteStorage.sol": {
+      "lastModificationDate": 1632435290782,
+      "contentHash": "45f02108a71eb7266ea27c25c6396ae8",
+      "sourceName": "contracts/VoteStorage.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "VoteStorage"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/VoteWeight.sol": {
@@ -226,78 +450,6 @@
       ],
       "artifacts": [
         "VotingBooth"
-      ]
-    },
-    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/CoreLib.sol": {
-      "lastModificationDate": 1632844939832,
-      "contentHash": "138eebbdf1b607209385502f5fbb75e9",
-      "sourceName": "contracts/CoreLib.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "devdoc",
-                "userdoc"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.7"
-      ],
-      "artifacts": [
-        "CoreLib"
-      ]
-    },
-    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/VoteStorage.sol": {
-      "lastModificationDate": 1632435290782,
-      "contentHash": "45f02108a71eb7266ea27c25c6396ae8",
-      "sourceName": "contracts/VoteStorage.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "devdoc",
-                "userdoc"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.7"
-      ],
-      "artifacts": [
-        "VoteStorage"
       ]
     }
   }
