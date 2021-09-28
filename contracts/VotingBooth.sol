@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
+import "./BaseSystem.sol";
+
 // Use ERC20Votes for delegation of votes
 // GovernerVotes for where to hook into token 
 
-contract VotingBooth {
+contract VotingBooth is BaseSystem {
 
+    constructor(address _core) BaseSystem(CoreLib.VOTE_BOOTH, _core) {}
 
     function vote(
         uint256 _propID,

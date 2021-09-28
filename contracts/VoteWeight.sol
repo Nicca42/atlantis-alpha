@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
+import "./BaseSystem.sol";
+
 // Use ERC20Votes for snapshot token balances 
 
-contract VoteWeight {
+contract VoteWeight is BaseSystem {
+
+    constructor(address _core) BaseSystem(CoreLib.VOTE_WEIGHT, _core) {}
 
     function getVoteWeight(
         uint256 _propID,

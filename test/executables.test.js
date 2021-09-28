@@ -80,5 +80,5 @@ describe("Executable contract isolation testing", () => {
         ],
         values: [0, 0],
         description: "A test executable."
-    }
+    };
 });

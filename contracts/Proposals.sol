@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-import "./CoreLib.sol";
+import "./BaseSystem.sol";
 
 interface IExe {
     function getExe(bytes32 _exeID)
@@ -18,14 +18,7 @@ interface IExe {
         returns (bytes32 propExeID);
 }
 
-interface ICore {
-    function getInstance(bytes32 _key) external view returns (address);
-
-    function IDENTIFIER() external view returns (bytes32);
-}
-
-contract Proposals {
-    ICore private core_;
+contract Proposals is BaseSystem {
 
     uint256 private propIDCounter_;
 
@@ -39,15 +32,7 @@ contract Proposals {
     mapping(uint256 => Prop) private props_;
 
     // TODO this is probably going to need to an initialisers
-    constructor(address _core) {
-        core_ = ICore(_core);
-        // NOTE this does not protect from malformed core modules, it prevents
-        //      non-malicious error deployments.
-        require(
-            core_.IDENTIFIER() == bytes32(keccak256("CORE")),
-            "Core: identifier incorrect"
-        );
-    }
+    constructor(address _core) BaseSystem(CoreLib.PROPS, _core) {}
 
     function createPropWithExe(
         string calldata _description,

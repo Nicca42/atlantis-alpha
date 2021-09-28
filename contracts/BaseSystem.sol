@@ -7,10 +7,10 @@ import "./interfaces/ICore.sol";
 abstract contract BaseSystem {
     bytes32 immutable public IDENTIFIER;
 
-    ICore immutable public core;
+    ICore immutable public core_;
 
     constructor(bytes32 _key, address _core) {
         IDENTIFIER = _key;
-        core = ICore(_core);
+        core_ = ICore(_core);
     }
 }

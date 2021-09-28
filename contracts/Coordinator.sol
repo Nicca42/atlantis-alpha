@@ -6,7 +6,7 @@ import "./CoreLib.sol";
 // QS make common contract with interface and library
 import "./openZeppelin/Initializable.sol";
 
-contract Coord is Initializable {
+contract Coordinator is Initializable {
     bytes32 public constant IDENTIFIER = bytes32(keccak256("COORDINATOR"));
 
     ICore immutable public core;
