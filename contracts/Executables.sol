@@ -2,12 +2,7 @@
 pragma solidity 0.8.7;
 
 import "./CoreLib.sol";
-
-interface ICore {
-    function getInstance(bytes32 _key) external view returns (address);
-
-    function IDENTIFIER() external view returns (bytes32);
-}
+import "./interfaces/ICore.sol";
 
 contract Executables {
     ICore private core_;
@@ -22,7 +17,6 @@ contract Executables {
 
     mapping(bytes32 => Exe) private dotExe_;
 
-    // TODO this is probably going to need to an initialisers
     constructor(address _core) {
         core_ = ICore(_core);
         // NOTE this does not protect from malformed core modules, it prevents
