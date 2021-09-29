@@ -25,10 +25,10 @@ contract SimpleMajority is BaseSystem {
 
     modifier onlyVotingBooth() {
         address votingBooth = core_.getInstance(CoreLib.VOTE_BOOTH);
-        // require(
-        //     votingBooth == msg.sender,
-        //     "Voting Type: Only Voting Booth"          
-        // );
+        require(
+            votingBooth == msg.sender,
+            "Voting Type: Only Voting Booth"          
+        );
         _;
     }
     constructor(address _core)
@@ -51,6 +51,8 @@ contract SimpleMajority is BaseSystem {
         IVoteWeight weightImplementation = IVoteWeight(
             core_.getInstance(CoreLib.VOTE_WEIGHT)
         );
+
+        // TODO get quorum threshold 
 
         uint256 voteWeight = weightImplementation.getVoteWeight(_propID, _voter);
 

@@ -69,13 +69,8 @@ describe("Vote Booth contract isolation testing", () => {
         let propID = prop.events[0].args.propID.toString();
 
         let encodedVote = await testExecutable.encodeBool(1);
-        console.log(encodedVote)
-
-        // await simpleMajority.connect(voter).vote(propID, encodedVote, voter.address);
-
-        console.log("test")
-
-        let vote = await (await votingBooth.connect(voter).vote(propID, "0x01")).wait();
+        
+        let vote = await (await votingBooth.connect(voter).vote(propID, encodedVote)).wait();
 
         console.log(vote.events)
     });

@@ -460,8 +460,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/votingTypes/SimpleMajority.sol": {
-      "lastModificationDate": 1632950742526,
-      "contentHash": "3a57d55cedfb4798ac316cc2377379eb",
+      "lastModificationDate": 1632950869362,
+      "contentHash": "67737a61136e9fb321a92e42c2785fa8",
       "sourceName": "contracts/votingTypes/SimpleMajority.sol",
       "solcConfig": {
         "version": "0.8.7",
