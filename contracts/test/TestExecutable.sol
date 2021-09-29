@@ -27,4 +27,8 @@ contract TestExecutable {
     function isExecutable(bytes32 _exeID) external pure returns(bool) {
         return true;
     }
+
+    function encodeBool(bool _input) external pure returns(bytes memory) {
+        return abi.encode(_input);
+    }
 }

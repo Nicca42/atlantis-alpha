@@ -25,7 +25,7 @@ describe("Coordinator contract testing", () => {
         coordinator = await Coordinator.deploy(core.address);
         proposals = await Proposals.deploy(core.address);
         voteWeight = await VoteWeight.deploy(core.address);
-        votingBooth = await VotingBooth.deploy(core.address);
+        // votingBooth = await VotingBooth.deploy(core.address);
         voteStorage = await VoteStorage.deploy(core.address);
         testExecutable = await TestExecutable.deploy();
 
@@ -34,7 +34,7 @@ describe("Coordinator contract testing", () => {
             executable.address,
             proposals.address,
             voteWeight.address,
-            votingBooth.address,
+            core.address,
             voteStorage.address
         );
     });

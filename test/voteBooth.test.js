@@ -2,13 +2,15 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Vote Booth contract isolation testing", () => {
-    var deployer, core;
-    var core, coordinator, executable, proposals, voteWeight, votingBooth, voteStorage, testExecutable;
+    var deployer, proposer, voter;
+    var core, coordinator, executable, proposals, voteWeight, votingBooth, 
+        voteStorage, simpleMajority, testExecutable;
 
     beforeEach(async () => {
         [
             deployer,
-            core
+            proposer,
+            voter
         ] = await ethers.getSigners();
 
         const Core = await ethers.getContractFactory("Core");
@@ -18,6 +20,7 @@ describe("Vote Booth contract isolation testing", () => {
         const VoteWeight = await ethers.getContractFactory("VoteWeight");
         const VotingBooth = await ethers.getContractFactory("VotingBooth");
         const VoteStorage = await ethers.getContractFactory("VoteStorage");
+        const SimpleMajority = await ethers.getContractFactory("SimpleMajority");
         const TestExecutable = await ethers.getContractFactory("TestExecutable");
 
         core = await Core.deploy();
@@ -25,7 +28,13 @@ describe("Vote Booth contract isolation testing", () => {
         coordinator = await Coordinator.deploy(core.address);
         proposals = await Proposals.deploy(core.address);
         voteWeight = await VoteWeight.deploy(core.address);
-        votingBooth = await VotingBooth.deploy(core.address);
+        simpleMajority = await SimpleMajority.deploy(core.address);
+        votingBooth = await VotingBooth.deploy(
+            core.address,
+            simpleMajority.address,
+            testExe.initialVoteType,
+            testExe.voteFormat,
+        );
         voteStorage = await VoteStorage.deploy(core.address);
         testExecutable = await TestExecutable.deploy();
 
@@ -39,7 +48,52 @@ describe("Vote Booth contract isolation testing", () => {
         );
     });
 
-    it("Vote Booth", async () => {});
+    it("Vote Booth", async () => {
+        let exe = await (await executable.connect(proposer).createExe(
+            [testExecutable.address, testExecutable.address],
+            testExe.funcSig,
+            testExe.bytes,
+            testExe.values,
+            testExe.descriptionExe
+        )).wait();
 
-    let testExe = {};
+        let exeID = exe.events[0].args.exeID;
+
+        let prop = await (await proposals.connect(proposer).createPropWithExe(
+            testExe.descriptionProp,
+            simpleMajority.address,
+            testExe.bytes[0],
+            exeID
+        )).wait();
+
+        let propID = prop.events[0].args.propID.toString();
+
+        let encodedVote = await testExecutable.encodeBool(1);
+        console.log(encodedVote)
+
+        // await simpleMajority.connect(voter).vote(propID, encodedVote, voter.address);
+
+        console.log("test")
+
+        let vote = await (await votingBooth.connect(voter).vote(propID, "0x01")).wait();
+
+        console.log(vote.events)
+    });
+
+    let testExe = {
+        funcSig: ["setNumber(uint256)", "setBytes(bytes32)"],
+        bytes: [
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "0x0000000000000000000000000000000000000000000000000000000000000001"
+        ],
+        calldata: [
+            "0x3fb5c1cb0000000000000000000000000000000000000000000000000000000000000001",
+            "0xe6748da90000000000000000000000000000000000000000000000000000000000000001"
+        ],
+        values: [0, 0],
+        descriptionExe: "A test executable.",
+        descriptionProp: "A test proposal.",
+        initialVoteType: "0x0000000000000000000000000000000000000000000000000000000000000001",
+        voteFormat: "bool"
+    };
 });

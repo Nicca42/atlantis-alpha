@@ -20,6 +20,6 @@ contract VoteWeight is BaseSystem {
 
         // TODO maybe use library for vote weight? Then can have multiple
 
-        return 0;
+        return 1;
     }
 }

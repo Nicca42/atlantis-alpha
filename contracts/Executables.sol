@@ -135,6 +135,8 @@ contract Executables {
             "Exe: Exe does not exist"
         );
 
-        return (bytes32(0));
+        // QS make copy exe
+
+        return _exeID;
     }
 }
