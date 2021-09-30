@@ -58,10 +58,10 @@ contract SimpleMajority is BaseSystem {
 
         try this.decodeCastBallot(_vote) returns (bool castVoteFor) {
             if(castVoteFor) {
-            voteCount_[_propID].weightFor += voteWeight;
-        } else {
-            voteCount_[_propID].weightAgainst += voteWeight;
-        }
+                voteCount_[_propID].weightFor += voteWeight;
+            } else {
+                voteCount_[_propID].weightAgainst += voteWeight;
+            }
         } catch {
             require(false, "Vote incorrectly formatted");
         }
@@ -77,6 +77,9 @@ contract SimpleMajority is BaseSystem {
      *          ballot is incorrectly formatted. 
      */
     function decodeCastBallot(bytes memory _ballot) external pure returns (bool) {
+        // NOTE in less restrictive data types verification will need to be 
+        //      performed on decoded data as incorrect castings can occur 
+        //      without causing errors. 
         return abi.decode(_ballot, (bool));
     }
 }
