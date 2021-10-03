@@ -14,6 +14,11 @@
           "internalType": "bytes32",
           "name": "_exeID",
           "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "_description",
+          "type": "string"
         }
       ],
       "name": "createPropExe",

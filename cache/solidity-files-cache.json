@@ -113,8 +113,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Proposals.sol": {
-      "lastModificationDate": 1632950149831,
-      "contentHash": "1b40087407c2d7936f47bde04d348c18",
+      "lastModificationDate": 1633280094999,
+      "contentHash": "ef168587056a99e25f135e5dd2b7edea",
       "sourceName": "contracts/Proposals.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -152,8 +152,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Executables.sol": {
-      "lastModificationDate": 1632948777069,
-      "contentHash": "1438fb4e7ee00a2c51dd5939ee2a83df",
+      "lastModificationDate": 1633278858059,
+      "contentHash": "a3e79db4618cf4a691092f32a605ca6b",
       "sourceName": "contracts/Executables.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -180,8 +180,7 @@
         }
       },
       "imports": [
-        "./CoreLib.sol",
-        "./interfaces/ICore.sol"
+        "./BaseSystem.sol"
       ],
       "versionPragmas": [
         "0.8.7"
@@ -268,8 +267,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Coordinator.sol": {
-      "lastModificationDate": 1632869657993,
-      "contentHash": "8991674918a222886fe77d63599f9357",
+      "lastModificationDate": 1633275286256,
+      "contentHash": "6650b1229bdf849cd65d4ae08525d4c0",
       "sourceName": "contracts/Coordinator.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -296,9 +295,7 @@
         }
       },
       "imports": [
-        "./interfaces/ICore.sol",
-        "./CoreLib.sol",
-        "./openZeppelin/Initializable.sol"
+        "./BaseSystem.sol"
       ],
       "versionPragmas": [
         "0.8.7"
@@ -460,8 +457,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/votingTypes/SimpleMajority.sol": {
-      "lastModificationDate": 1632950869362,
-      "contentHash": "67737a61136e9fb321a92e42c2785fa8",
+      "lastModificationDate": 1632997310521,
+      "contentHash": "e900463d5fa1e8d7cd086c29eb152356",
       "sourceName": "contracts/votingTypes/SimpleMajority.sol",
       "solcConfig": {
         "version": "0.8.7",

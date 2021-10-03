@@ -13,7 +13,7 @@ interface IExe {
             uint256[] memory values
         );
 
-    function createPropExe(uint256 _propID, bytes32 _exeID)
+    function createPropExe(uint256 _propID, bytes32 _exeID, string memory _description)
         external
         returns (bytes32 propExeID);
 }
@@ -37,7 +37,6 @@ contract Proposals is BaseSystem {
         bytes32 exeID
     );
 
-    // TODO this is probably going to need to an initialisers
     constructor(address _core) BaseSystem(CoreLib.PROPS, _core) {}
 
     function getVoteType(uint256 _propID) external view returns(address) {
@@ -56,7 +55,16 @@ contract Proposals is BaseSystem {
 
         propID = propIDCounter_;
 
-        bytes32 propExeID = exeInstance.createPropExe(propID, _exeID);
+        string memory newDescription = string(
+            abi.encodePacked(
+                propID,
+                _exeID
+            )  
+        );
+
+        // TODO verify vote type
+
+        bytes32 propExeID = exeInstance.createPropExe(propID, _exeID, newDescription);
 
         require(propExeID != bytes32(0), "Prop: Exe does not exist");
 
@@ -70,7 +78,7 @@ contract Proposals is BaseSystem {
         emit  NewProposal(
             propID,
             _voteType,
-            _exeID
+            propExeID
         );
     }
 

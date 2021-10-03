@@ -1,19 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-import "./interfaces/ICore.sol";
-import "./CoreLib.sol";
-// QS make common contract with interface and library
-import "./openZeppelin/Initializable.sol";
+import "./BaseSystem.sol";
 
-contract Coordinator is Initializable {
-    bytes32 public constant IDENTIFIER = bytes32(keccak256("COORDINATOR"));
-
-    ICore immutable public core;
-
-    constructor(address _core) {
-        core = ICore(_core);
-    }
+contract Coordinator is BaseSystem {
+    constructor(address _core) BaseSystem(CoreLib.COORD, _core) {}
 
     /**
      * @param   _exeID ID of the executable to check. 

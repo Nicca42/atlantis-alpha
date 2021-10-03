@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-import "./CoreLib.sol";
-import "./interfaces/ICore.sol";
+import "./BaseSystem.sol";
 
-contract Executables {
-    ICore private core_;
-
+contract Executables is BaseSystem {
     struct Exe {
         address[] targets;
         uint256[] values;
@@ -23,15 +20,7 @@ contract Executables {
         string description
     );
 
-    constructor(address _core) {
-        core_ = ICore(_core);
-        // NOTE this does not protect from malformed core modules, it prevents
-        //      non-malicious error deployments.
-        require(
-            core_.IDENTIFIER() == bytes32(keccak256("CORE")),
-            "Core: identifier incorrect"
-        );
-    }
+    constructor(address _core) BaseSystem(CoreLib.EXE, _core) {}
 
     function getExe(bytes32 _exeID)
         external
@@ -121,8 +110,8 @@ contract Executables {
 
         // TODO mint NFT token
     }
-
-    function createPropExe(uint256 _propID, bytes32 _exeID)
+ 
+    function createPropExe(uint256 _propID, bytes32 _exeID, string memory _description)
         external
         returns (bytes32 propExeID)
     {
@@ -135,8 +124,32 @@ contract Executables {
             "Exe: Exe does not exist"
         );
 
-        // QS make copy exe
+        propExeID = getExeId(
+            dotExe_[_exeID].targets, 
+            dotExe_[_exeID].values, 
+            dotExe_[_exeID].callData, 
+            _description
+        );
 
-        return _exeID;
+        require(
+            dotExe_[propExeID].creator == address(0),
+            "Exe: Exe ID already in use"
+        );
+
+        dotExe_[propExeID] = Exe({
+            targets: dotExe_[_exeID].targets, 
+            values: dotExe_[_exeID].values,
+            callData: dotExe_[_exeID].callData,
+            description: _description,
+            creator: dotExe_[_exeID].creator
+        });
+
+        emit MintExecutable(
+            propExeID,
+            dotExe_[_exeID].targets,
+            _description
+        );
+
+        return propExeID;
     }
 }

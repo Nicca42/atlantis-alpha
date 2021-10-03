@@ -2,13 +2,13 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Executable contract isolation testing", () => {
-    var deployer, core;
+    var deployer, mockProp;
     var core, executable, testExecutable;
 
     beforeEach(async () => {
         [
             deployer,
-            core
+            mockProp
         ] = await ethers.getSigners();
 
         const Core = await ethers.getContractFactory("Core");
@@ -22,7 +22,7 @@ describe("Executable contract isolation testing", () => {
         await core.initialise(
             testExecutable.address,
             executable.address,
-            "0x0000000000000000000000000000000000000000",
+            mockProp.address,
             "0x0000000000000000000000000000000000000000",
             "0x0000000000000000000000000000000000000000",
             "0x0000000000000000000000000000000000000000"
@@ -66,6 +66,26 @@ describe("Executable contract isolation testing", () => {
         expect(storedNumber).to.equal(1);
         expect(storedAddress).to.equal(core.address);
         expect(storedBytes).to.equal(testExe.bytes[1]);
+    });
+
+    it("Can create prop executable", async () => {
+        let exe = await (await executable.createExe(
+            [testExecutable.address, testExecutable.address],
+            testExe.funcSig,
+            testExe.bytes,
+            testExe.values,
+            testExe.description
+        )).wait();
+
+        let exeID = exe.events[0].args.exeID;
+
+        let propExe = await (await executable.connect(mockProp).createPropExe(
+            1,
+            exeID,
+            "0x010x0" + exeID
+        )).wait();
+
+        console.log(propExe.events[0].args.description);
     });
 
     let testExe = {
