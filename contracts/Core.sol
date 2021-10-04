@@ -83,15 +83,13 @@ contract Core is Initializable {
         address _executables,
         address _props,
         address _voteWeight,
-        address _votingBooth,
-        address _voteStorage
+        address _votingBooth
     ) external initializer {
         _addContract(CoreLib.COORD, _coord);
         _addContract(CoreLib.EXE, _executables);
         _addContract(CoreLib.PROPS, _props);
         _addContract(CoreLib.VOTE_WEIGHT, _voteWeight);
         _addContract(CoreLib.VOTE_BOOTH, _votingBooth);
-        _addContract(CoreLib.VOTE_STORAGE, _voteStorage);
     }
 
     //--------------------------------------------------------------------------

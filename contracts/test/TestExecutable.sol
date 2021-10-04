@@ -31,4 +31,8 @@ contract TestExecutable {
     function encodeBool(bool _input) external pure returns(bytes memory) {
         return abi.encode(_input);
     }
+
+    function encodeBytes32(string calldata _string) external pure returns(bytes32) {
+        return bytes32(abi.encodePacked(_string));
+    }
 }

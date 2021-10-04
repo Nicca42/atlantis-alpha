@@ -34,7 +34,7 @@ contract Coordinator is BaseSystem {
 
         require(
             msg.sender == systemRegistered,
-            "Coord: Incorrect identifier"
+            "Coord: Incorrect ID for sub"
         );
 
         subSystems_[msg.sender][_subIdentifier] = _subImplementation;

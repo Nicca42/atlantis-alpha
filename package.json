@@ -9,7 +9,7 @@
   "scripts": {
     "build": "hardhat compile",
     "test": "hardhat test",
-    "cover": "hardhat coverage", 
+    "cover": "hardhat coverage",
     "clean": "rm -rf artifacts && rm -rf cache",
     "deploy:local": "hardhat run scripts/sample-script.js --network localhost"
   },
