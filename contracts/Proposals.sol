@@ -18,6 +18,10 @@ interface IExe {
         returns (bytes32 propExeID);
 }
 
+interface ICoord {
+    function getSubSystem(address _system, bytes32 _subIdentifier) external view returns(address);
+}
+
 contract Proposals is BaseSystem {
 
     uint256 private propIDCounter_;
@@ -25,7 +29,6 @@ contract Proposals is BaseSystem {
     struct Prop {
         string description;
         address voteType;
-        bytes32 consensusType;
         bytes32 exeID;
     }
 
@@ -45,15 +48,25 @@ contract Proposals is BaseSystem {
 
     function createPropWithExe(
         string calldata _description,
-        address _voteType,
-        bytes32 _consensusType,
+        bytes32 _voteTypeID,
         bytes32 _exeID
     ) external returns (uint256 propID) {
         IExe exeInstance = IExe(core_.getInstance(CoreLib.EXE));
+        ICoord coordInstance = ICoord(core_.getInstance(CoreLib.COORD));
 
         propIDCounter_ += 1;
 
         propID = propIDCounter_;
+
+        address voteType = coordInstance.getSubSystem(
+            core_.getInstance(CoreLib.VOTE_BOOTH),
+            _voteTypeID
+        );
+
+        require(
+            voteType != address(0),
+            "Prop: Invalid vote type"
+        );
 
         string memory newDescription = string(
             abi.encodePacked(
@@ -62,22 +75,23 @@ contract Proposals is BaseSystem {
             )  
         );
 
-        // TODO verify vote type
-
-        bytes32 propExeID = exeInstance.createPropExe(propID, _exeID, newDescription);
+        bytes32 propExeID = exeInstance.createPropExe(
+            propID, 
+            _exeID, 
+            newDescription
+        );
 
         require(propExeID != bytes32(0), "Prop: Exe does not exist");
 
         props_[propID] = Prop({
             description: _description,
-            voteType: _voteType,
-            consensusType: _consensusType,
+            voteType: voteType,
             exeID: propExeID
         });
 
         emit  NewProposal(
             propID,
-            _voteType,
+            voteType,
             propExeID
         );
     }

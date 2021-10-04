@@ -57,7 +57,7 @@ describe("Proposal contract isolation testing", () => {
 
         let propExe = await executable.getExeInfo(proposal.events[1].args.exeID);
 
-        console.log(propExe)
+        console.log( await propExe.description)
     });
 
     let testExe = {
