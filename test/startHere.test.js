@@ -4,9 +4,9 @@ const { ethers } = require("hardhat");
 // TODO move this to a deployment script of basic system
 
 describe("Start here: Intro to the Atlantis framework", () => {
-    var deployer, proposer, voter;
+    var deployer, proposer, voter_one, voter_two, voter_three;
     var core, coordinator, executable, proposals, voteWeight, votingBooth, 
-        voteStorage, simpleMajority, testExecutable, govToken, repToken;
+        simpleMajority, testExecutable, govToken, repToken;
     var Core, Coordinator, Executable, Proposals, VotingBooth, VoteWeight, 
         SimpleMajority, TestExecutable, Token;
 
@@ -14,7 +14,9 @@ describe("Start here: Intro to the Atlantis framework", () => {
         [
             deployer,
             proposer,
-            voter
+            voter_one,
+            voter_two,
+            voter_three
         ] = await ethers.getSigners();
 
         console.log(
@@ -116,13 +118,38 @@ describe("Start here: Intro to the Atlantis framework", () => {
     it("Distributed tokens to voters", async () => {
         console.log("\n5️⃣  Distribute governance and reputation token...\n");
 
-        // TODO
+        await govToken.mint(proposer.address, 10);
+        await govToken.mint(voter_one.address, 10);
+        await govToken.mint(voter_two.address, 100);
+        await govToken.mint(voter_three.address, 1000);
+
+        await repToken.mint(proposer.address, 1000);
+        await repToken.mint(voter_one.address, 100);
+        await repToken.mint(voter_two.address, 10);
+        await repToken.mint(voter_three.address, 1);
     });
 
     it("Created an executable", async () => {
         console.log("\n6️⃣  Create a executable...\n");
 
-        // TODO
+        // If you want to test the parameter encoding you can uncomment this
+        // let encodedFunctionParameters = await testExecutable.encodeBytes(
+        //     proposer.address,
+        //     1000
+        // );
+        // console.log(encodedFunctionParameters.toString());
+
+        let exe = await (await executable.createExe(
+            [repToken.address],
+            ["mint(address,uint256)"],
+            ["0x70997970c51812dc3a010c7d01b50e0d17dc79c800000000000000000000000000000000000000000000000000000000000003e8"],
+            [0],
+            "Distributing reputation rewards to proposer."
+        )).wait();
+
+        let exeID = exe.events[0].args.exeID;
+
+        console.log("Exe created. ID: ", exeID.toString(), "\n");
     });
 
     it("Created a proposal", async () => {

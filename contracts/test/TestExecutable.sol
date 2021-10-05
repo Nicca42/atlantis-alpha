@@ -35,4 +35,12 @@ contract TestExecutable {
     function encodeBytes32(string calldata _string) external pure returns(bytes32) {
         return bytes32(abi.encodePacked(_string));
     }
+
+    function encodeBytes4(string calldata _string) external pure returns(bytes32) {
+        return bytes4(abi.encodePacked(_string));
+    }
+
+    function encodeBytes(address _address, uint256 _number) external pure returns(bytes memory) {
+        return abi.encodePacked(_address, _number);
+    }
 }

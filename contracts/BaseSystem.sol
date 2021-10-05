@@ -3,8 +3,9 @@ pragma solidity 0.8.7;
 
 import "./CoreLib.sol";
 import "./interfaces/ICore.sol";
+import "./openZeppelin/Initializable.sol";
 
-abstract contract BaseSystem {
+abstract contract BaseSystem is Initializable {
     bytes32 immutable public IDENTIFIER;
 
     ICore immutable public core_;
