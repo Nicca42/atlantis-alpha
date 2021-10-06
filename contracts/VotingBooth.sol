@@ -51,10 +51,21 @@ contract VotingBooth is BaseSystem {
         address _initialVoteInstance,
         bytes32 _initialVoteType,
         string memory _voteFormat
-    ) external {
-        // TODO make init 
+    ) external initializer {
         _addVoteType(_initialVoteType, _initialVoteInstance, _voteFormat);
     }
+
+    //--------------------------------------------------------------------------
+    // VIEW & PURE FUNCTIONS
+    //--------------------------------------------------------------------------
+
+    function getVoteType(address _instance) external view returns(bytes32) {
+        return voteTypes_[_instance].typeId;
+    }
+
+    //--------------------------------------------------------------------------
+    // PUBLIC & EXTERNAL FUNCTIONS
+    //--------------------------------------------------------------------------
 
     function vote(
         uint256 _propID,
@@ -67,9 +78,12 @@ contract VotingBooth is BaseSystem {
 
         IVoteType voteType = IVoteType(propInstance.getVoteType(_propID));
 
-        // QS call prop instance to ensure prop is votable 
+        require(
+            this.getVoteType(address(voteType)) != bytes32(0),
+            "Booth: Invalid vote type"
+        );
 
-        // QS ensure vote type is registered here. 
+        // QS call prop instance to ensure prop is votable 
 
         emit VoteCast(
             msg.sender,
@@ -88,6 +102,10 @@ contract VotingBooth is BaseSystem {
     {
         _addVoteType(_voteType, _instance, _voteFormat);
     }
+
+    //--------------------------------------------------------------------------
+    // PRIVATE & INTERNAL FUNCTIONS
+    //--------------------------------------------------------------------------
 
     function _addVoteType(
         bytes32 _voteType, 
