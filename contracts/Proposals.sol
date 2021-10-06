@@ -47,6 +47,18 @@ contract Proposals is BaseSystem {
         Executed
     }
 
+    // QS replace system wide with this
+    enum PropStatus {
+        NO_PROP,
+        CREATED,
+        VOTING,
+        EXPIRED,
+        DEFEATED,
+        QUEUED,
+        EXECUTED
+        // Only successful props can be queued, no need for a state. 
+    }
+
     struct Prop {
         string description;
         address voteType;
@@ -72,6 +84,14 @@ contract Proposals is BaseSystem {
     //--------------------------------------------------------------------------
 
     event NewProposal(uint256 indexed propID, address voteType, bytes32 exeID);
+
+    modifier onlyCoord() {
+        address coordInstance = core_.getInstance(CoreLib.COORD);
+        require(
+            msg.sender == coordInstance,
+            "Prop: Only coord can call"
+        );
+    }
 
     //--------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -232,4 +252,80 @@ contract Proposals is BaseSystem {
         voteStartDelay_ = _startDelay;
         voteEndDelay_ = _endDelay;
     }
+
+
+    //--------------------------------------------------------------------------
+    // ONLY COORDINATOR
+    //
+    // Below functions can only be called by the coordinator.
+
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Expired. Only the coordinator 
+     *          can call this function. 
+     *          A proposal expires if it does not reach the minimum consensus 
+     *          specifications before the vote window expires. 
+     */
+    function propExpire(uint256 _propID) external onlyCoord {
+        require(
+            props_[_propID].state == PropState.ActiveVoting,
+            "Prop: Invalid state movement"
+        );
+
+        props_[_propID].state = PropState.Expired;
+    }
+
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Defeated. Only the coordinator 
+     *          can call this function. 
+     *          A proposal is defeated if it reaches the minimum consensus 
+     *          specifications but is voted against. 
+     */
+    function propDefeated(uint256 _propID) external onlyCoord {
+        require(
+            props_[_propID].state == PropState.ActiveVoting,
+            "Prop: Invalid state movement"
+        );
+
+        props_[_propID].state = PropState.Defeated;
+    }
+
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Queued. Only the coordinator 
+     *          can call this function. 
+     *          A proposal is queued if it reaches the minimum consensus 
+     *          specifications and is voted for. Once queued a proposal can be
+     *          executed. If a proposal does not have an executable, it can 
+     *          still be "executed" to update the state in accordance. 
+     */
+    function propQueued(uint256 _propID) external onlyCoord {
+        require(
+            props_[_propID].state == PropState.ActiveVoting,
+            "Prop: Invalid state movement"
+        );
+
+        props_[_propID].state = PropState.Queued;
+    }
+
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Executed. Only the coordinator 
+     *          can call this function. 
+     *          A proposal is executed if it reaches the minimum consensus 
+     *          specifications, is voted for and then executed. If a proposal 
+     *          has a related executable this executable will be run in the 
+     *          context of the core. If there is no associated executable, the
+     *          status of the proposal will be updated regardless. 
+     */
+    function propExecuted(uint256 _propID) external onlyCoord {
+        require(
+            props_[_propID].state == PropState.Queued,
+            "Prop: Invalid state movement"
+        );
+
+        props_[_propID].state = PropState.Executed;
+    }
+
 }

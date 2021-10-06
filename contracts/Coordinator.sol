@@ -30,6 +30,13 @@ interface IProp {
     function getPropOfExe(bytes32 _exeID) external view returns(uint256);
 }
 
+interface IBooth {
+    function consensusReached(uint256 _propID)
+        external
+        view
+        returns (bool reached, bool votePassed);
+}
+
 contract Coordinator is BaseSystem {
     //--------------------------------------------------------------------------
     // STATE
@@ -118,7 +125,34 @@ contract Coordinator is BaseSystem {
     }
 
     function queueProposal(uint256 _propID) external {
-        
+        IBooth boothInstance = IBooth(core_.getInstance(CoreLib.VOTE_BOOTH));
+        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
+
+        (
+            IProp.PropState state,
+            uint256 voteStart,
+            uint256 voteEnd,
+            bool executedOrCanceled
+        ) = propInstance.getPropVotables(_propID);
+
+        require(
+            voteEnd >= block.timestamp && !executedOrCanceled,
+            "Coord: voting active or executed"
+        );
+
+        (
+            bool reached, 
+            bool votePassed
+        ) = boothInstance.consensusReached(_propID);
+
+        if(!reached) {
+            // Proposal expired without reaching consensus
+            propInstance
+        } else if(!votePassed) {
+            // Proposal was defeated
+        } else {
+            // Proposal succeeded and can be queued
+        }
     }
 
     function getSubSystem(address _system, bytes32 _subIdentifier)
