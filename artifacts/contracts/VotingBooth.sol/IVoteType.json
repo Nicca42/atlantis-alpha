@@ -9,6 +9,30 @@
           "internalType": "uint256",
           "name": "_propID",
           "type": "uint256"
+        }
+      ],
+      "name": "consensusReached",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "reached",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "votePassed",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_propID",
+          "type": "uint256"
         },
         {
           "internalType": "bytes",

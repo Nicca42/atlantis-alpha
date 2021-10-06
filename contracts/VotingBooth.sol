@@ -4,25 +4,38 @@ pragma solidity 0.8.7;
 import "./BaseSystem.sol";
 
 // Use ERC20Votes for delegation of votes
-// GovernerVotes for where to hook into token 
+// GovernerVotes for where to hook into token
 
 interface IProp {
-    function getVoteType(uint256 _propID) external view returns(address);
+    function getVoteType(uint256 _propID) external view returns (address);
 }
 
 interface IVoteType {
-    function vote(uint256 _propID, bytes memory _vote, address _voter) external returns(bool);
+    function vote(
+        uint256 _propID,
+        bytes memory _vote,
+        address _voter
+    ) external returns (bool);
+
+    function consensusReached(uint256 _propID)
+        external
+        view
+        returns (bool reached, bool votePassed);
 }
 
 interface ICoord {
-    function getSubSystem(address _system, bytes32 _subIdentifier) external view returns(address);
-    function addSubSystem(bytes32 _subIdentifier, address _subImplementation) external;
+    function getSubSystem(address _system, bytes32 _subIdentifier)
+        external
+        view
+        returns (address);
+
+    function addSubSystem(bytes32 _subIdentifier, address _subImplementation)
+        external;
 }
 
 // QS move all these interfaces to the base system
 
 contract VotingBooth is BaseSystem {
-
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -30,16 +43,11 @@ contract VotingBooth is BaseSystem {
     struct VoteType {
         bytes32 typeId;
         string voteFormat;
-
     }
 
     mapping(address => VoteType) private voteTypes_;
 
-    event VoteCast(
-        address indexed voter,
-        uint256 indexed propID,
-        bytes vote
-    );
+    event VoteCast(address indexed voter, uint256 indexed propID, bytes vote);
 
     //--------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -59,21 +67,27 @@ contract VotingBooth is BaseSystem {
     // VIEW & PURE FUNCTIONS
     //--------------------------------------------------------------------------
 
-    function getVoteType(address _instance) external view returns(bytes32) {
+    function getVoteType(address _instance) external view returns (bytes32) {
         return voteTypes_[_instance].typeId;
+    }
+
+    function consensusReached(uint256 _propID)
+        external
+        view
+        returns (bool reached, bool votePassed) 
+    {
+        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
+
+        IVoteType voteType = IVoteType(propInstance.getVoteType(_propID));
+
+        return voteType.consensusReached(_propID);
     }
 
     //--------------------------------------------------------------------------
     // PUBLIC & EXTERNAL FUNCTIONS
     //--------------------------------------------------------------------------
 
-    function vote(
-        uint256 _propID,
-        bytes memory _vote
-    )
-        external 
-        returns(bool)
-    {
+    function vote(uint256 _propID, bytes memory _vote) external returns (bool) {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         IVoteType voteType = IVoteType(propInstance.getVoteType(_propID));
@@ -83,23 +97,18 @@ contract VotingBooth is BaseSystem {
             "Booth: Invalid vote type"
         );
 
-        // QS call prop instance to ensure prop is votable 
+        // QS call prop instance to ensure prop is votable
 
-        emit VoteCast(
-            msg.sender,
-            _propID,
-            _vote
-        );
+        emit VoteCast(msg.sender, _propID, _vote);
 
         return voteType.vote(_propID, _vote, msg.sender);
     }
 
     function addVoteType(
-        bytes32 _voteType, 
+        bytes32 _voteType,
         address _instance,
         string memory _voteFormat
-        ) external onlyCore() 
-    {
+    ) external onlyCore {
         _addVoteType(_voteType, _instance, _voteFormat);
     }
 
@@ -108,7 +117,7 @@ contract VotingBooth is BaseSystem {
     //--------------------------------------------------------------------------
 
     function _addVoteType(
-        bytes32 _voteType, 
+        bytes32 _voteType,
         address _instance,
         string memory _voteFormat
     ) internal {
@@ -119,9 +128,6 @@ contract VotingBooth is BaseSystem {
 
         ICoord coordInstance = ICoord(core_.getInstance(CoreLib.COORD));
 
-        coordInstance.addSubSystem(
-            _voteType,
-            _instance
-        );
+        coordInstance.addSubSystem(_voteType, _instance);
     }
 }
