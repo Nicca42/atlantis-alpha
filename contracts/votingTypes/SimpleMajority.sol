@@ -10,6 +10,8 @@ interface IVoteWeight {
     )
         external 
         returns(uint256);
+
+    function getTotalWeight(uint256 _propID) external view returns(uint256);
 }
 
 contract SimpleMajority is BaseSystem {
@@ -35,6 +37,24 @@ contract SimpleMajority is BaseSystem {
         BaseSystem(keccak256("VOTE_TYPE_SIMPLE_MAJORITY"), _core)
     {}
 
+    /**
+     *  @param  _ballot Bytes of user vote
+     * @return  bool the decoded vote
+     * @notice  This function iss separate from the vote function to allow the
+     *          vote function to throw a more accurate revert message if the
+     *          ballot is incorrectly formatted. 
+     */
+    function decodeCastBallot(bytes memory _ballot) external pure returns (bool) {
+        // NOTE in less restrictive data types verification will need to be 
+        //      performed on decoded data as incorrect castings can occur 
+        //      without causing errors. 
+        return abi.decode(_ballot, (bool));
+    }
+
+    function encodeBallot(bool _for) external pure returns(bytes memory) {
+        return abi.encodePacked(_for);
+    }
+
     function vote(
         uint256 _propID,
         bytes memory _vote,
@@ -44,15 +64,15 @@ contract SimpleMajority is BaseSystem {
             !voteCount_[_propID].hasVoted[_voter],
             "Booth: Voter Has voted for prop"
         );
+        // NOTE if using a snapshot a user would be able to change their vote
+
         voteCount_[_propID].hasVoted[_voter] = true;
         voteCount_[_propID].voterTurnout += 1;
 
         IVoteWeight weightImplementation = IVoteWeight(
             core_.getInstance(CoreLib.VOTE_WEIGHT)
         );
-
-        // TODO get quorum threshold 
-
+        
         uint256 voteWeight = weightImplementation.getVoteWeight(_propID, _voter);
 
         try this.decodeCastBallot(_vote) returns (bool castVoteFor) {
@@ -71,21 +91,30 @@ contract SimpleMajority is BaseSystem {
     // TODO call proposal with first vote (maybe votebooth calls?)
     //      to update state and ensure voting only happens in valid period. 
 
-    /**
-     *  @param  _ballot Bytes of user vote
-     * @return  bool the decoded vote
-     * @notice  This function iss separate from the vote function to allow the
-     *          vote function to throw a more accurate revert message if the
-     *          ballot is incorrectly formatted. 
-     */
-    function decodeCastBallot(bytes memory _ballot) external pure returns (bool) {
-        // NOTE in less restrictive data types verification will need to be 
-        //      performed on decoded data as incorrect castings can occur 
-        //      without causing errors. 
-        return abi.decode(_ballot, (bool));
+    enum QuorumStatus {
+        InsufficientParticipation,
+        VotePassed,
+        VoteFailed
     }
 
-    function encodeBallot(bool _for) external pure returns(bytes memory) {
-        return abi.encodePacked(_for);
+    function _quorumReached(uint256 _propID) internal returns(QuorumStatus) {
+        IVoteWeight weightImplementation = IVoteWeight(
+            core_.getInstance(CoreLib.VOTE_WEIGHT)
+        );
+
+        uint256 totalWeight = weightImplementation.getTotalWeight(_propID);
+
+        uint256 allVotedWeight = voteCount_[_propID].weightFor +
+            voteCount_[_propID].weightAgainst;
+        
+        if(totalWeight/2 > allVotedWeight) {
+            // Not enough weight has voted for simple majority
+            return QuorumStatus.InsufficientParticipation;
+        } else if(
+            voteCount_[_propID].weightFor > voteCount_[_propID].weightAgainst
+        ) {
+            return QuorumStatus.VotePassed;
+        }
+        return QuorumStatus.VoteFailed;
     }
 }

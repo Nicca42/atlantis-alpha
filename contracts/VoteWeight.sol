@@ -53,4 +53,9 @@ contract VoteWeight is BaseSystem {
             return voteWeight / 2;
         }
     }
+
+    function getTotalWeight(uint256 _propID) external view returns(uint256) {
+        // TODO this should use the snapshot. Super insecure to do it like this
+        return (govToken_.totalSupply() + repToken_.totalSupply() / 2);
+    }
 }

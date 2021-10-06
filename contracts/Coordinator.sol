@@ -117,6 +117,10 @@ contract Coordinator is BaseSystem {
         // Don't need to return false, will return false if not returning true.
     }
 
+    function queueProposal(uint256 _propID) external {
+        
+    }
+
     function getSubSystem(address _system, bytes32 _subIdentifier)
         external
         view
