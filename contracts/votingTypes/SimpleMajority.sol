@@ -47,7 +47,6 @@ contract SimpleMajority is BaseSystem {
         voteCount_[_propID].hasVoted[_voter] = true;
         voteCount_[_propID].voterTurnout += 1;
 
-        // TODO get vote weight from vote weight
         IVoteWeight weightImplementation = IVoteWeight(
             core_.getInstance(CoreLib.VOTE_WEIGHT)
         );

@@ -16,7 +16,8 @@ contract VoteWeight is BaseSystem {
         address _govToken,
         address _repToken
     ) external initializer {
-        // QS real init
+        govToken_ = IERC20(_govToken);
+        repToken_ = IERC20(_repToken);
 
         // FUTURE turn into registry like voting booth
             // use library for vote weight? Then can have multiple
