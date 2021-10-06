@@ -4,22 +4,6 @@ pragma solidity 0.8.7;
 import "./BaseSystem.sol";
 
 interface IProp {
-    function getPropVotables(uint256 _propID)
-        external
-        view
-        returns (
-            PropState state,
-            uint256 voteStart,
-            uint256 voteEnd,
-            bool executedOrCanceled
-        );
-}
-
-contract Coordinator is BaseSystem {
-    //--------------------------------------------------------------------------
-    // STATE
-    //--------------------------------------------------------------------------
-
     // QS move to base
     enum PropState {
         NotCreated,
@@ -32,6 +16,24 @@ contract Coordinator is BaseSystem {
         Expired,
         Executed
     }
+
+    function getPropVotables(uint256 _propID)
+        external
+        view
+        returns (
+            PropState state,
+            uint256 voteStart,
+            uint256 voteEnd,
+            bool executedOrCanceled
+        );
+
+    function getPropOfExe(bytes32 _exeID) external view returns(uint256);
+}
+
+contract Coordinator is BaseSystem {
+    //--------------------------------------------------------------------------
+    // STATE
+    //--------------------------------------------------------------------------
 
     mapping(address => mapping(bytes32 => address)) private subSystems_;
 
@@ -46,7 +48,7 @@ contract Coordinator is BaseSystem {
     //--------------------------------------------------------------------------
 
     /**
-     * @param   _propID ID of the executable to check.
+     * @param   _exeID ID of the executable to check.
      * @notice  This function will check that the specified proposal has reached
      *          quorum, and that it has passed. If the proposal has not reached
      *          quorum or has not passed this will return false.
@@ -57,18 +59,28 @@ contract Coordinator is BaseSystem {
      *          executable status.
      */
     function isExecutable(bytes32 _exeID) external view returns (bool) {
-        IProp propInstance = IProp(core_.getInstance(CoreLib.PROP));
+        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
+
+        uint256 propID = propInstance.getPropOfExe(_exeID);
+
+        // If prop does not exist for this exe then it is not executable
+        if(propID == uint256(0)) {
+            // FUTURE in later versions one might want to have a list of 
+            //        pre-approved exes that can be executed on a recurring 
+            //        basis (i.e monthly payments)/
+            return false;
+        }
 
         (
-            PropState state,
+            IProp.PropState state,
             uint256 voteStart,
             uint256 voteEnd,
             bool executedOrCanceled
-        ) = propInstance.getPropVotables(_propID);
+        ) = propInstance.getPropVotables(propID);
 
         if (
             // State is queued
-            state == PropState.Queued &&
+            state == IProp.PropState.Queued &&
             // AND vote end has passed
             voteEnd > block.timestamp &&
             // AND prop has not been executed or canceled
@@ -76,14 +88,14 @@ contract Coordinator is BaseSystem {
         ) {
             return true;
         }
-        return false;
+        // Don't need to return false, will return false if not returning true.
     }
 
     function isVotable(uint256 _propID) external view returns (bool) {
-        IProp propInstance = IProp(core_.getInstance(CoreLib.PROP));
+        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         (
-            PropState state,
+            IProp.PropState state,
             uint256 voteStart,
             uint256 voteEnd,
             bool executedOrCanceled
@@ -91,18 +103,18 @@ contract Coordinator is BaseSystem {
 
         if (
             // State is created or active
-            state == PropState.Created ||
+            state == IProp.PropState.Created || 
+            state == IProp.PropState.ActiveVoting &&
             // AND vote start has passed
+            voteStart >= block.timestamp &&
             // AND vote end has not passed
+            voteEnd <= block.timestamp &&
             // AND prop has not been executed or canceled
-            (state == PropState.ActiveVoting &&
-                voteStart >= block.timestamp &&
-                voteEnd <= block.timestamp &&
-                !executedOrCanceled)
+            !executedOrCanceled
         ) {
             return true;
         }
-        return false;
+        // Don't need to return false, will return false if not returning true.
     }
 
     function getSubSystem(address _system, bytes32 _subIdentifier)

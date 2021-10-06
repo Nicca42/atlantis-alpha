@@ -29,7 +29,7 @@ interface ICoord {
 }
 
 contract Proposals is BaseSystem {
-    
+
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -58,6 +58,8 @@ contract Proposals is BaseSystem {
     }
 
     mapping(uint256 => Prop) private props_;
+    // Exe IDs to related props
+    mapping(bytes32 => uint256) private exeToProp_;
 
     uint256 private propIDCounter_;
 
@@ -83,6 +85,14 @@ contract Proposals is BaseSystem {
 
     function getVoteType(uint256 _propID) external view returns (address) {
         return props_[_propID].voteType;
+    }
+
+    function getExeOfProp(uint256 _propID) external view returns(bytes32) {
+        return props_[_propID].exeID;
+    }
+
+    function getPropOfExe(bytes32 _exeID) external view returns(uint256) {
+        return exeToProp_[_exeID];
     }
 
     function getProposalInfo(uint256 _propID) external view returns(
@@ -142,7 +152,11 @@ contract Proposals is BaseSystem {
 
         require(voteType != address(0), "Prop: Invalid vote type");
 
-        string memory newDescription = string(abi.encodePacked(propID, _exeID));
+        string memory newDescription = string(abi.encodePacked(
+            propID, 
+            _exeID,
+            block.timestamp
+        ));
 
         bytes32 propExeID = exeInstance.createPropExe(
             propID,
@@ -151,6 +165,10 @@ contract Proposals is BaseSystem {
         );
 
         require(propExeID != bytes32(0), "Prop: Exe does not exist");
+        require(
+            exeToProp_[propExeID] == 0,
+            "Prop: Exe ID already associated"
+        );
 
         uint256 voteStart = block.timestamp + voteStartDelay_;
 
@@ -163,6 +181,7 @@ contract Proposals is BaseSystem {
             voteEnd: voteStart + voteEndDelay_,
             executedOrCanceled: false
         });
+        exeToProp_[propExeID] = propID;
 
         emit NewProposal(propID, voteType, propExeID);
 
