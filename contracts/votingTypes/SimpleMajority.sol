@@ -68,6 +68,9 @@ contract SimpleMajority is BaseSystem {
         return true;
     }
 
+    // TODO call proposal with first vote (maybe votebooth calls?)
+    //      to update state and ensure voting only happens in valid period. 
+
     /**
      *  @param  _ballot Bytes of user vote
      * @return  bool the decoded vote
@@ -80,5 +83,9 @@ contract SimpleMajority is BaseSystem {
         //      performed on decoded data as incorrect castings can occur 
         //      without causing errors. 
         return abi.decode(_ballot, (bool));
+    }
+
+    function encodeBallot(bool _for) external pure returns(bytes memory) {
+        return abi.encodePacked(_for);
     }
 }

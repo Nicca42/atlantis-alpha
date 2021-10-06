@@ -29,10 +29,12 @@ interface ICoord {
 }
 
 contract Proposals is BaseSystem {
+    
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
 
+    // QS move to base
     enum PropState {
         NotCreated,
         Created,
@@ -81,6 +83,40 @@ contract Proposals is BaseSystem {
 
     function getVoteType(uint256 _propID) external view returns (address) {
         return props_[_propID].voteType;
+    }
+
+    function getProposalInfo(uint256 _propID) external view returns(
+        string memory description,
+        address voteType,
+        bytes32 exeID,
+        PropState state,
+        uint256 voteStart,
+        uint256 voteEnd,
+        bool executedOrCanceled
+    ) {
+        return (
+            props_[_propID].description,
+            props_[_propID].voteType,
+            props_[_propID].exeID,
+            props_[_propID].state,
+            props_[_propID].voteStart,
+            props_[_propID].voteEnd,
+            props_[_propID].executedOrCanceled
+        );
+    }
+
+    function getPropVotables(uint256 _propID) external view returns(
+        PropState state,
+        uint256 voteStart,
+        uint256 voteEnd,
+        bool executedOrCanceled
+    ) {
+        return(
+            props_[_propID].state,
+            props_[_propID].voteStart,
+            props_[_propID].voteEnd,
+            props_[_propID].executedOrCanceled
+        );
     }
 
     //--------------------------------------------------------------------------

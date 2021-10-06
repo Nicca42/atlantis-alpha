@@ -44,6 +44,7 @@ contract VoteWeight is BaseSystem {
 
         uint256 voteWeight = govToken_.balanceOf(_voter) * repToken_.balanceOf(_voter);
 
+        // return(voteWeight == 0 ? 0 : voteWeight / 2);
         if(
             voteWeight == 0
         ) {
