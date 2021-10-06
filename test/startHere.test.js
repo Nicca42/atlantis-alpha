@@ -9,6 +9,7 @@ describe("Start here: Intro to the Atlantis framework", () => {
         simpleMajority, testExecutable, govToken, repToken;
     var Core, Coordinator, Executable, Proposals, VotingBooth, VoteWeight, 
         SimpleMajority, TestExecutable, Token;
+    var voteTypeID, exeID, propID;
 
     before(async () => {
         [
@@ -79,7 +80,7 @@ describe("Start here: Intro to the Atlantis framework", () => {
         
         // Here we are are getting the bytes32 of the vote type. This will be
         // used as the identifier for the consensus mechanism. 
-        let voteTypeID = await testExecutable.encodeBytes32("SIMPLE_MAJORITY");
+        voteTypeID = await testExecutable.encodeBytes32("SIMPLE_MAJORITY");
         
         // Init voting booth with consensus mechanism
         await votingBooth.initialise(
@@ -139,7 +140,7 @@ describe("Start here: Intro to the Atlantis framework", () => {
         // );
         // console.log(encodedFunctionParameters.toString());
 
-        let exe = await (await executable.createExe(
+        let exe = await (await executable.connect(proposer).createExe(
             [repToken.address],
             ["mint(address,uint256)"],
             ["0x70997970c51812dc3a010c7d01b50e0d17dc79c800000000000000000000000000000000000000000000000000000000000003e8"],
@@ -147,7 +148,7 @@ describe("Start here: Intro to the Atlantis framework", () => {
             "Distributing reputation rewards to proposer."
         )).wait();
 
-        let exeID = exe.events[0].args.exeID;
+        exeID = exe.events[0].args.exeID;
 
         console.log("Exe created. ID: ", exeID.toString(), "\n");
     });
@@ -155,11 +156,19 @@ describe("Start here: Intro to the Atlantis framework", () => {
     it("Created a proposal", async () => {
         console.log("\n7️⃣  Create a proposal...\n");
 
-        // TODO
+        let proposal = await (await proposals.connect(proposer).createPropWithExe(
+            "Proposal to distribute reputation rewards to proposer.",
+            voteTypeID.toString(),
+            exeID
+        )).wait();
+
+        propID = proposal.events[1].args.propID.toString();
+        console.log("Prop created. ID: ", propID.toString(), "\n");
     });
     
     it("Voted on proposal", async () => {
         console.log("\n8️⃣  Vote on the proposal...\n");
+        
         
         // TODO
     });
