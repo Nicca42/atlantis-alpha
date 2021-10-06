@@ -36,6 +36,7 @@ contract VoteWeight is BaseSystem {
         address _voter
     )
         external 
+        view
         returns(uint256)
     {
         // TODO if first check for a prop make snapshot 

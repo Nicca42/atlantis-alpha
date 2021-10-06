@@ -28,6 +28,11 @@ interface IProp {
         );
 
     function getPropOfExe(bytes32 _exeID) external view returns(uint256);
+
+    function propExpire(uint256 _propID) external;
+    function propDefeated(uint256 _propID) external;
+    function propQueued(uint256 _propID) external;
+    function propExecuted(uint256 _propID) external;
 }
 
 interface IBooth {
@@ -147,11 +152,13 @@ contract Coordinator is BaseSystem {
 
         if(!reached) {
             // Proposal expired without reaching consensus
-            propInstance
+            propInstance.propExpire(_propID);
         } else if(!votePassed) {
             // Proposal was defeated
+            propInstance.propDefeated(_propID); 
         } else {
             // Proposal succeeded and can be queued
+            propInstance.propQueued(_propID); 
         }
     }
 

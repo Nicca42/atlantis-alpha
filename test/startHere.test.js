@@ -128,6 +128,14 @@ describe("Start here: Intro to the Atlantis framework", () => {
         await repToken.mint(voter_one.address, 100);
         await repToken.mint(voter_two.address, 10);
         await repToken.mint(voter_three.address, 1);
+
+        // let propVoteWeight = "" + await voteWeight.getVoteWeight(propID, proposer.address);
+
+
+        // console.log(
+        //     "Proposer vote weight:",
+        //     propVoteWeight.toString()
+        // );
     });
 
     it("Created an executable", async () => {
@@ -169,8 +177,34 @@ describe("Start here: Intro to the Atlantis framework", () => {
     it("Voted on proposal", async () => {
         console.log("\n8️⃣  Vote on the proposal...\n");
         
+        let voteFor = await simpleMajority.encodeBallot(true);
+        let voteAgainst = await simpleMajority.encodeBallot(false);
+
+        await votingBooth.connect(proposer).vote(propID, voteFor);
+        await votingBooth.connect(voter_one).vote(propID, voteFor);
+        await votingBooth.connect(voter_two).vote(propID, voteFor);
+        await votingBooth.connect(voter_three).vote(propID, voteAgainst);
+        // TODO shouldn't be able to vote here :/ 
+        //      should be reverting because it is not within the voting window
+
+        let consensusReached = await votingBooth.consensusReached(propID);
+
+        console.log(consensusReached)
+    });
+
+    it("Queue proposal", async () => {
+        console.log("\n9️⃣  Queue the proposal...\n");
+
+        let status = await proposals.getPropVotables(propID);
+
+        console.log(status);
         
-        // TODO
+        // TODO Need to move time here
+        await coordinator.connect(proposer).queueProposal(propID);
+
+        status = await proposals.getPropVotables(propID);
+
+        console.log(status);
     });
 
     it("Executed proposal", async () => {

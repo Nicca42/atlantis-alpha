@@ -50,7 +50,7 @@ contract SimpleMajority is BaseSystem {
     }
 
     function encodeBallot(bool _for) external pure returns (bytes memory) {
-        return abi.encodePacked(_for);
+        return abi.encode(_for);
     }
 
     function vote(

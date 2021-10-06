@@ -91,6 +91,7 @@ contract Proposals is BaseSystem {
             msg.sender == coordInstance,
             "Prop: Only coord can call"
         );
+        _;
     }
 
     //--------------------------------------------------------------------------
