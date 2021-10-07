@@ -91,8 +91,8 @@ contract Executables is BaseSystem {
     ) external returns (bytes32 exeID) {
         require(
             _targets.length == _functionSignatures.length &&
-                _targets.length == _encodedParameters.length &&
-                _targets.length == _values.length,
+            _targets.length == _encodedParameters.length &&
+            _targets.length == _values.length,
             "Exe: Array length mismatch"
         );
 

@@ -33,7 +33,7 @@
       "name": "getPropVotables",
       "outputs": [
         {
-          "internalType": "enum IProp.PropState",
+          "internalType": "enum IProp.PropStatus",
           "name": "state",
           "type": "uint8"
         },

@@ -5,23 +5,22 @@ import "./BaseSystem.sol";
 
 interface IProp {
     // QS move to base
-    enum PropState {
-        NotCreated,
-        Created,
-        ActiveVoting,
-        Canceled,
-        Defeated,
-        Succeeded,
-        Queued,
-        Expired,
-        Executed
+    enum PropStatus {
+        NO_PROP,
+        CREATED,
+        VOTING,
+        QUEUED,
+        EXECUTED,
+        EXPIRED,
+        DEFEATED
+        // Only successful props can be queued, no need for a state.
     }
 
     function getPropVotables(uint256 _propID)
         external
         view
         returns (
-            PropState state,
+            PropStatus state,
             uint256 voteStart,
             uint256 voteEnd,
             bool executedOrCanceled
@@ -92,7 +91,7 @@ contract Coordinator is BaseSystem {
         }
 
         (
-            IProp.PropState state,
+            IProp.PropStatus state,
             uint256 voteStart,
             uint256 voteEnd,
             bool executedOrCanceled
@@ -100,7 +99,7 @@ contract Coordinator is BaseSystem {
 
         if (
             // State is queued
-            state == IProp.PropState.Queued &&
+            state == IProp.PropStatus.QUEUED &&
             // AND vote end has passed
             voteEnd < getCurrentTime() &&
             // AND prop has not been executed or canceled
@@ -123,21 +122,21 @@ contract Coordinator is BaseSystem {
         //        basis (i.e monthly payments)/
 
         (
-            IProp.PropState state,
+            IProp.PropStatus state,
             ,
             uint256 voteEnd,
             bool spent
         ) = propInstance.getPropVotables(propID);
 
-        // require(
-        //     // State is queued
-        //     state == IProp.PropState.Queued &&
-        //     // AND vote end has passed
-        //     voteEnd < getCurrentTime() &&
-        //     // AND prop has not been executed or canceled
-        //     !spent,
-        //     "Coord: exe not executable"
-        // );
+        require(
+            // State is queued
+            state == IProp.PropStatus.QUEUED &&
+            // AND vote end has passed
+            voteEnd <= getCurrentTime() &&
+            // AND prop has not been executed or canceled
+            !spent,
+            "Coord: exe not executable"
+        );
 
         propInstance.propExecuted(propID);
     }
@@ -146,7 +145,7 @@ contract Coordinator is BaseSystem {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         (
-            IProp.PropState state,
+            IProp.PropStatus state,
             uint256 voteStart,
             uint256 voteEnd,
             bool executedOrCanceled
@@ -154,8 +153,8 @@ contract Coordinator is BaseSystem {
 
         if (
             // State is created or active
-            (state == IProp.PropState.Created ||
-                state == IProp.PropState.ActiveVoting) &&
+            (state == IProp.PropStatus.CREATED ||
+                state == IProp.PropStatus.VOTING) &&
             // AND vote start has passed
             voteStart <= getCurrentTime() &&
             // AND vote end has not passed
@@ -173,7 +172,7 @@ contract Coordinator is BaseSystem {
         IBooth boothInstance = IBooth(core_.getInstance(CoreLib.VOTE_BOOTH));
 
         (
-            IProp.PropState state,
+            IProp.PropStatus state,
             uint256 voteStart,
             uint256 voteEnd,
             bool executedOrCanceled
@@ -185,8 +184,8 @@ contract Coordinator is BaseSystem {
         );
         require(
             // State is created or active
-            (state == IProp.PropState.Created ||
-                state == IProp.PropState.ActiveVoting) &&
+            (state == IProp.PropStatus.CREATED ||
+                state == IProp.PropStatus.VOTING) &&
             // AND vote start has passed
             voteStart <= getCurrentTime() &&
             // AND vote end has not passed
@@ -197,7 +196,7 @@ contract Coordinator is BaseSystem {
         );
 
         // If the state has not been set to voting this sets it to voting.
-        if(state == IProp.PropState.Created) {
+        if(state == IProp.PropStatus.CREATED) {
             propInstance.propVoting(_propID);
         }
 
@@ -236,7 +235,7 @@ contract Coordinator is BaseSystem {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         (
-            IProp.PropState state,
+            IProp.PropStatus state,
             uint256 voteStart,
             uint256 voteEnd,
             bool executedOrCanceled

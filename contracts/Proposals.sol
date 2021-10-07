@@ -34,17 +34,6 @@ contract Proposals is BaseSystem {
     //--------------------------------------------------------------------------
 
     // QS move to base
-    enum PropState {
-        NotCreated,
-        Created,
-        ActiveVoting,
-        Canceled,
-        Defeated,
-        Succeeded,
-        Queued,
-        Expired,
-        Executed
-    }
 
     // QS replace system wide with this
     enum PropStatus {
@@ -62,7 +51,7 @@ contract Proposals is BaseSystem {
         string description;
         address voteType;
         bytes32 exeID;
-        PropState state;
+        PropStatus state;
         uint256 voteStart;
         uint256 voteEnd;
         bool spent;
@@ -141,7 +130,7 @@ contract Proposals is BaseSystem {
             string memory description,
             address voteType,
             bytes32 exeID,
-            PropState state,
+            PropStatus state,
             uint256 voteStart,
             uint256 voteEnd,
             bool spent
@@ -162,7 +151,7 @@ contract Proposals is BaseSystem {
         external
         view
         returns (
-            PropState state,
+            PropStatus state,
             uint256 voteStart,
             uint256 voteEnd,
             bool spent
@@ -218,7 +207,7 @@ contract Proposals is BaseSystem {
             description: _description,
             voteType: voteType,
             exeID: propExeID,
-            state: PropState.Created,
+            state: PropStatus.CREATED,
             voteStart: voteStart,
             voteEnd: voteStart + voteEndDelay_,
             spent: false
@@ -279,11 +268,11 @@ contract Proposals is BaseSystem {
 
     function propVoting(uint256 _propID) external onlyCoord {
         require(
-            props_[_propID].state == PropState.Created,
+            props_[_propID].state == PropStatus.CREATED,
             "Prop: Invalid state movement"
         );
 
-        props_[_propID].state = PropState.ActiveVoting;
+        props_[_propID].state = PropStatus.VOTING;
     }
 
     /**
@@ -295,11 +284,11 @@ contract Proposals is BaseSystem {
      */
     function propExpire(uint256 _propID) external onlyCoord {
         require(
-            props_[_propID].state == PropState.ActiveVoting,
+            props_[_propID].state == PropStatus.VOTING,
             "Prop: Invalid state movement"
         );
 
-        props_[_propID].state = PropState.Expired;
+        props_[_propID].state = PropStatus.EXPIRED;
         props_[_propID].spent = true;
     }
 
@@ -312,11 +301,11 @@ contract Proposals is BaseSystem {
      */
     function propDefeated(uint256 _propID) external onlyCoord {
         require(
-            props_[_propID].state == PropState.ActiveVoting,
+            props_[_propID].state == PropStatus.VOTING,
             "Prop: Invalid state movement"
         );
 
-        props_[_propID].state = PropState.Defeated;
+        props_[_propID].state = PropStatus.DEFEATED;
         props_[_propID].spent = true;
     }
 
@@ -331,11 +320,11 @@ contract Proposals is BaseSystem {
      */
     function propQueued(uint256 _propID) external onlyCoord {
         require(
-            props_[_propID].state == PropState.ActiveVoting,
+            props_[_propID].state == PropStatus.VOTING,
             "Prop: Invalid state movement"
         );
 
-        props_[_propID].state = PropState.Queued;
+        props_[_propID].state = PropStatus.QUEUED;
     }
 
     /**
@@ -350,11 +339,11 @@ contract Proposals is BaseSystem {
      */
     function propExecuted(uint256 _propID) external onlyCoord {
         require(
-            props_[_propID].state == PropState.Queued,
+            props_[_propID].state == PropStatus.QUEUED,
             "Prop: Invalid state movement"
         );
 
-        props_[_propID].state = PropState.Executed;
+        props_[_propID].state = PropStatus.EXECUTED;
         props_[_propID].spent = true;
     }
 }

@@ -141,14 +141,6 @@ describe("Start here: Intro to the Atlantis framework", () => {
         await repToken.mint(voter_one.address, 100);
         await repToken.mint(voter_two.address, 10);
         await repToken.mint(voter_three.address, 1);
-
-        // let propVoteWeight = "" + await voteWeight.getVoteWeight(propID, proposer.address);
-
-
-        // console.log(
-        //     "Proposer vote weight:",
-        //     propVoteWeight.toString()
-        // );
     });
 
     it("Created an executable", async () => {
@@ -242,8 +234,6 @@ describe("Start here: Intro to the Atlantis framework", () => {
 
         status = await proposals.getPropVotables(propID);
         console.log(status)
-        
-        // TODO
     });
 
     let testExe = {
