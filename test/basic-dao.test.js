@@ -5,7 +5,7 @@ describe("Basic DAO testing", () => {
     var deployer, proposer, voter_one, voter_two, voter_three;
     var core, coordinator, executable, proposals, voteWeight, votingBooth, 
         simpleMajority, testExecutable, govToken, repToken, timer;
-    let exeID, propID, propExeID;
+    let exeID, propID, propExeID, status;
 
     beforeEach(async () => {
         [
@@ -162,7 +162,7 @@ describe("Basic DAO testing", () => {
             propID = proposal.events[1].args.propID.toString();
             propExeID = proposal.events[1].args.exeID.toString();
 
-            let status = await proposals.getPropVotables(propID);
+            status = await proposals.getPropVotables(propID);
 
             expect(
                 propID.toString()
@@ -219,11 +219,49 @@ describe("Basic DAO testing", () => {
             propID = proposal.events[1].args.propID.toString();
             propExeID = proposal.events[1].args.exeID.toString();
 
-            let status = await proposals.getPropVotables(propID);
+            status = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(status.voteStart); 
         });
 
         it("Can vote on proposal", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
 
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+
+            let currentVote = await simpleMajority.getCurrentVote(propID);
+            let voterStatus = await simpleMajority.hasVoted(propID, proposer.address);
+
+            console.log(currentVote)
+            // QS
+
+            expect(
+                voterStatus
+            ).to.equal(
+                true
+            );
+        });
+
+        it("Can't vote before start", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await timer.setCurrentTime(status.voteStart - 1); 
+
+            await expect(
+                votingBooth.connect(proposer).vote(propID, voteFor)
+            ).to.be.revertedWith('Coord: prop not votable');
+        });
+
+        it("Can't vote after end", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await timer.setCurrentTime(status.voteEnd + 1); 
+
+            await expect(
+                votingBooth.connect(proposer).vote(propID, voteFor)
+            ).to.be.revertedWith('Coord: prop not votable');
         });
     });
 

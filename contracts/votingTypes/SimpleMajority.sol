@@ -52,14 +52,25 @@ contract SimpleMajority is BaseSystem, IVoteType {
         pure
         returns (bool)
     {
-        // NOTE in less restrictive data types verification will need to be
-        //      performed on decoded data as incorrect castings can occur
-        //      without causing errors.
         return abi.decode(_ballot, (bool));
     }
 
     function encodeBallot(bool _for) external pure returns (bytes memory) {
         return abi.encode(_for);
+    }
+
+    function getCurrentVote(uint256 _propID) external view returns(
+        uint256 weightFor,
+        uint256 weightAgainst,
+        uint256 voterTurnout
+    ) {
+        weightFor = voteCount_[_propID].weightFor;
+        weightAgainst = voteCount_[_propID].weightAgainst;
+        voterTurnout = voteCount_[_propID].voterTurnout;
+    }
+    
+    function hasVoted(uint256 _propID, address _voter) external view returns(bool) {
+        return voteCount_[_propID].hasVoted[_voter];
     }
 
     function consensusReached(uint256 _propID)
