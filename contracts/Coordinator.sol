@@ -102,13 +102,44 @@ contract Coordinator is BaseSystem {
             // State is queued
             state == IProp.PropState.Queued &&
             // AND vote end has passed
-            voteEnd > getCurrentTime() &&
+            voteEnd < getCurrentTime() &&
             // AND prop has not been executed or canceled
             !executedOrCanceled
         ) {
             return true;
         }
         // Don't need to return false, will return false if not returning true.
+    }
+
+    function setExecute(bytes32 _exeID) external onlyCore {
+        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
+
+        uint256 propID = propInstance.getPropOfExe(_exeID);
+
+        // If prop does not exist for this exe then it is not executable
+        require(propID != uint256(0), "Coord: No linked prop");
+        // FUTURE in later versions one might want to have a list of
+        //        pre-approved exes that can be executed on a recurring
+        //        basis (i.e monthly payments)/
+
+        (
+            IProp.PropState state,
+            ,
+            uint256 voteEnd,
+            bool spent
+        ) = propInstance.getPropVotables(propID);
+
+        // require(
+        //     // State is queued
+        //     state == IProp.PropState.Queued &&
+        //     // AND vote end has passed
+        //     voteEnd < getCurrentTime() &&
+        //     // AND prop has not been executed or canceled
+        //     !spent,
+        //     "Coord: exe not executable"
+        // );
+
+        propInstance.propExecuted(propID);
     }
 
     function isVotable(uint256 _propID) external view returns (bool) {

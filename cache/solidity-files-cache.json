@@ -380,8 +380,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Proposals.sol": {
-      "lastModificationDate": 1633613874070,
-      "contentHash": "08911230459e9269be0c0bfbe01bb4f7",
+      "lastModificationDate": 1633614946240,
+      "contentHash": "de36f03535693d1f4933b8eec784fc66",
       "sourceName": "contracts/Proposals.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -458,8 +458,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Coordinator.sol": {
-      "lastModificationDate": 1633614389900,
-      "contentHash": "66a408a32f42d0c475ad3a2976c3c932",
+      "lastModificationDate": 1633615350648,
+      "contentHash": "90a78b00a011b2841aff14957b4856aa",
       "sourceName": "contracts/Coordinator.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -536,8 +536,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Core.sol": {
-      "lastModificationDate": 1633513897715,
-      "contentHash": "c143852c41d12fa65174267b0af17ade",
+      "lastModificationDate": 1633615274512,
+      "contentHash": "e62b224006ded1219df5894f0da400d6",
       "sourceName": "contracts/Core.sol",
       "solcConfig": {
         "version": "0.8.7",

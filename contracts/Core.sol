@@ -36,6 +36,8 @@ interface ICoord {
      *          executable status.
      */
     function isExecutable(bytes32 _exeID) external view returns (bool);
+
+    function setExecute(bytes32 _exeID) external;
 }
 
 /**
@@ -47,7 +49,7 @@ interface ICoord {
  *          increase functionality.
  */
 contract Core is Initializable {
-    
+
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -116,7 +118,7 @@ contract Core is Initializable {
         // NOTE does this need re-entrancy guard?
         ICoord coord = ICoord(this.getInstance(CoreLib.COORD));
 
-        require(coord.isExecutable(_exeID), "Core: Exe is not executable");
+        coord.setExecute(_exeID);
 
         IExe exe = IExe(this.getInstance(CoreLib.EXE));
         // Gets the data for the executable

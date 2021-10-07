@@ -51,10 +51,10 @@ contract Proposals is BaseSystem {
         NO_PROP,
         CREATED,
         VOTING,
-        EXPIRED,
-        DEFEATED,
         QUEUED,
-        EXECUTED
+        EXECUTED,
+        EXPIRED,
+        DEFEATED
         // Only successful props can be queued, no need for a state.
     }
 
@@ -65,7 +65,7 @@ contract Proposals is BaseSystem {
         PropState state;
         uint256 voteStart;
         uint256 voteEnd;
-        bool executedOrCanceled;
+        bool spent;
     }
 
     mapping(uint256 => Prop) private props_;
@@ -144,7 +144,7 @@ contract Proposals is BaseSystem {
             PropState state,
             uint256 voteStart,
             uint256 voteEnd,
-            bool executedOrCanceled
+            bool spent
         )
     {
         return (
@@ -154,7 +154,7 @@ contract Proposals is BaseSystem {
             props_[_propID].state,
             props_[_propID].voteStart,
             props_[_propID].voteEnd,
-            props_[_propID].executedOrCanceled
+            props_[_propID].spent
         );
     }
 
@@ -165,14 +165,14 @@ contract Proposals is BaseSystem {
             PropState state,
             uint256 voteStart,
             uint256 voteEnd,
-            bool executedOrCanceled
+            bool spent
         )
     {
         return (
             props_[_propID].state,
             props_[_propID].voteStart,
             props_[_propID].voteEnd,
-            props_[_propID].executedOrCanceled
+            props_[_propID].spent
         );
     }
 
@@ -221,7 +221,7 @@ contract Proposals is BaseSystem {
             state: PropState.Created,
             voteStart: voteStart,
             voteEnd: voteStart + voteEndDelay_,
-            executedOrCanceled: false
+            spent: false
         });
         exeToProp_[propExeID] = propID;
 
@@ -300,6 +300,7 @@ contract Proposals is BaseSystem {
         );
 
         props_[_propID].state = PropState.Expired;
+        props_[_propID].spent = true;
     }
 
     /**
@@ -316,6 +317,7 @@ contract Proposals is BaseSystem {
         );
 
         props_[_propID].state = PropState.Defeated;
+        props_[_propID].spent = true;
     }
 
     /**
@@ -353,5 +355,6 @@ contract Proposals is BaseSystem {
         );
 
         props_[_propID].state = PropState.Executed;
+        props_[_propID].spent = true;
     }
 }

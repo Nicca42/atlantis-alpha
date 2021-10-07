@@ -10,7 +10,7 @@ describe("Start here: Intro to the Atlantis framework", () => {
         simpleMajority, testExecutable, govToken, repToken, timer;
     var Core, Coordinator, Executable, Proposals, VotingBooth, VoteWeight, 
         SimpleMajority, TestExecutable, Token, Timer;
-    var voteTypeID, exeID, propID;
+    var voteTypeID, exeID, propID, propExeID;
 
     before(async () => {
         [
@@ -161,12 +161,19 @@ describe("Start here: Intro to the Atlantis framework", () => {
         // );
         // console.log(encodedFunctionParameters.toString());
 
-        let exe = await (await executable.connect(proposer).createExe(
-            [repToken.address],
-            ["mint(address,uint256)"],
-            ["0x70997970c51812dc3a010c7d01b50e0d17dc79c800000000000000000000000000000000000000000000000000000000000003e8"],
-            [0],
-            "Distributing reputation rewards to proposer."
+        // let exe = await (await executable.connect(proposer).createExe(
+        //     [repToken.address],
+        //     ["mint(address,uint256)"],
+        //     ["0x70997970c51812dc3a010c7d01b50e0d17dc79c800000000000000000000000000000000000000000000000000000000000003e8"],
+        //     [0],
+        //     "Distributing reputation rewards to proposer."
+        // )).wait();
+        let exe = await (await executable.createExe(
+            [testExecutable.address, testExecutable.address],
+            testExe.funcSig,
+            testExe.bytes,
+            testExe.values,
+            testExe.description
         )).wait();
 
         exeID = exe.events[0].args.exeID;
@@ -184,6 +191,7 @@ describe("Start here: Intro to the Atlantis framework", () => {
         )).wait();
 
         propID = proposal.events[1].args.propID.toString();
+        propExeID = proposal.events[1].args.exeID.toString();
         console.log("Prop created. ID: ", propID.toString(), "\n");
     });
     
@@ -211,20 +219,44 @@ describe("Start here: Intro to the Atlantis framework", () => {
         console.log("\n5️⃣  Queue the proposal...\n");
 
         let status = await proposals.getPropVotables(propID);
-        console.log(status)
+        // console.log(status)
 
         await timer.setCurrentTime(status.voteEnd); 
 
         await coordinator.connect(proposer).queueProposal(propID);
 
-        status = await proposals.getPropVotables(propID);
+        // status = await proposals.getPropVotables(propID);
 
-        console.log(status);
+        // console.log(status);
     });
 
     it("Executed proposal", async () => {
         console.log("\n6️⃣  Execute the proposal...\n");
+
+        let tttt = await proposals.getPropOfExe(propExeID);
+        console.log(tttt.toString())
+        let status = await proposals.getPropVotables(propID);
+        console.log(status)
+
+        await core.execute(propExeID);
+
+        status = await proposals.getPropVotables(propID);
+        console.log(status)
         
         // TODO
     });
+
+    let testExe = {
+        funcSig: ["setNumber(uint256)", "setBytes(bytes32)"],
+        bytes: [
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "0x0000000000000000000000000000000000000000000000000000000000000001"
+        ],
+        calldata: [
+            "0x3fb5c1cb0000000000000000000000000000000000000000000000000000000000000001",
+            "0xe6748da90000000000000000000000000000000000000000000000000000000000000001"
+        ],
+        values: [0, 0],
+        description: "A test executable."
+    };
 });
