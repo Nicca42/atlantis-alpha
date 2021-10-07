@@ -599,8 +599,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Proposals.sol": {
-      "lastModificationDate": 1633622347056,
-      "contentHash": "87394d6a7ea30473d4e342f26899af78",
+      "lastModificationDate": 1633622857489,
+      "contentHash": "921c97046e9e2b3af8967cf70786a0b0",
       "sourceName": "contracts/Proposals.sol",
       "solcConfig": {
         "version": "0.8.7",

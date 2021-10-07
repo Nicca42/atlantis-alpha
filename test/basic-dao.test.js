@@ -5,7 +5,7 @@ describe("Basic DAO testing", () => {
     var deployer, proposer, voter_one, voter_two, voter_three;
     var core, coordinator, executable, proposals, voteWeight, votingBooth, 
         simpleMajority, testExecutable, govToken, repToken, timer;
-    let exeID;
+    let exeID, propID, propExeID;
 
     beforeEach(async () => {
         [
@@ -164,12 +164,66 @@ describe("Basic DAO testing", () => {
 
             let status = await proposals.getPropVotables(propID);
 
-            console.log(status)
-            // expect(
-            //     status.state
-            // ).to.equal(
-            //     testSettings.executable.calldata[1]
-            // );
+            expect(
+                propID.toString()
+            ).to.equal(
+                '1'
+            );
+            expect(
+                status.state
+            ).to.equal(
+                1
+            );
+            expect(
+                status.spent
+            ).to.equal(
+                false
+            );
+        });
+
+        it("Can't create bad proposal", async () => {
+            await expect(
+                proposals.connect(proposer).createPropWithExe(
+                    "Proposal to distribute reputation rewards to proposer.",
+                    testSettings.voteType.id,
+                    testSettings.proposals.badExeID
+                )
+            ).to.be.revertedWith('Exe: Exe does not exist');
+            await expect(
+                proposals.connect(proposer).createPropWithExe(
+                    "Proposal to distribute reputation rewards to proposer.",
+                    testSettings.voteType.badId,
+                    exeID
+                )
+            ).to.be.revertedWith('Prop: Invalid vote type');
+        });
+    });
+
+    describe("Voting testing", async () => {
+        beforeEach(async () => {
+            let exe = await (await executable.createExe(
+                [testExecutable.address, testExecutable.address],
+                testSettings.executable.funcSig,
+                testSettings.executable.bytes,
+                testSettings.executable.values,
+                testSettings.executable.description
+            )).wait();
+            exeID = exe.events[0].args.exeID;
+
+            let proposal = await (await proposals.connect(proposer).createPropWithExe(
+                "Proposal to distribute reputation rewards to proposer.",
+                testSettings.voteType.id,
+                exeID
+            )).wait();
+
+            propID = proposal.events[1].args.propID.toString();
+            propExeID = proposal.events[1].args.exeID.toString();
+
+            let status = await proposals.getPropVotables(propID);
+        });
+
+        it("Can vote on proposal", async () => {
+
         });
     });
 
@@ -195,12 +249,14 @@ describe("Basic DAO testing", () => {
         },
         voteType: {
             id: "0x53494d504c455f4d414a4f524954590000000000000000000000000000000000",
+            badId: "0x0000000000000000000000000000000000000000000000000000000000000000",
             voteFormat: "bool"
         },
         proposals: {
             minDelay: 15,
             startDelay: 15,
-            endDelay: 15
+            endDelay: 15,
+            badExeID: "0x0000000000000000000000000000000000000000000000000000000000000000"
         },
         executable: {
             funcSig: ["setNumber(uint256)", "setBytes(bytes32)"],

@@ -140,7 +140,6 @@ contract Proposals is BaseSystem, IProp {
         ICoord coordInstance = ICoord(core_.getInstance(CoreLib.COORD));
 
         propIDCounter_ += 1;
-
         propID = propIDCounter_;
 
         address voteType = coordInstance.getSubSystem(
