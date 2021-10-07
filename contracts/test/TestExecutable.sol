@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-contract TestExecutable {
+import "./Testable.sol";
+
+contract TestExecutable is Testable {
     uint256 public aNumber;
     address public anAddress;
     bytes32 public aBytes;
+
+    constructor(address _timer) Testable(_timer) {}
 
     function setNumber(
         uint256 _aNumber
@@ -42,5 +46,9 @@ contract TestExecutable {
 
     function encodeBytes(address _address, uint256 _number) external pure returns(bytes memory) {
         return abi.encodePacked(_address, _number);
+    }
+
+    function getTime() external view returns(uint256) {
+        return getCurrentTime();
     }
 }

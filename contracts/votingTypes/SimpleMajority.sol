@@ -12,6 +12,10 @@ interface IVoteWeight {
 }
 
 contract SimpleMajority is BaseSystem {
+    //--------------------------------------------------------------------------
+    // STATE
+    //--------------------------------------------------------------------------
+
     struct Votes {
         uint256 weightFor;
         uint256 weightAgainst;
@@ -21,15 +25,27 @@ contract SimpleMajority is BaseSystem {
 
     mapping(uint256 => Votes) private voteCount_;
 
+    //--------------------------------------------------------------------------
+    // MODIFIER
+    //--------------------------------------------------------------------------
+
     modifier onlyVotingBooth() {
         address votingBooth = core_.getInstance(CoreLib.VOTE_BOOTH);
         require(votingBooth == msg.sender, "Voting Type: Only Voting Booth");
         _;
     }
 
-    constructor(address _core)
-        BaseSystem(keccak256("VOTE_TYPE_SIMPLE_MAJORITY"), _core)
+    //--------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //--------------------------------------------------------------------------
+
+    constructor(address _core, address _timer)
+        BaseSystem(keccak256("VOTE_TYPE_SIMPLE_MAJORITY"), _core, _timer)
     {}
+
+    //--------------------------------------------------------------------------
+    // VIEW & PURE FUNCTIONS
+    //--------------------------------------------------------------------------
 
     /**
      *  @param  _ballot Bytes of user vote
@@ -52,6 +68,35 @@ contract SimpleMajority is BaseSystem {
     function encodeBallot(bool _for) external pure returns (bytes memory) {
         return abi.encode(_for);
     }
+
+    function consensusReached(uint256 _propID)
+        external
+        view
+        returns (bool reached, bool votePassed)
+    {
+        IVoteWeight weightImplementation = IVoteWeight(
+            core_.getInstance(CoreLib.VOTE_WEIGHT)
+        );
+
+        uint256 totalWeight = weightImplementation.getTotalWeight(_propID);
+
+        uint256 allVotedWeight = voteCount_[_propID].weightFor +
+            voteCount_[_propID].weightAgainst;
+
+        if (totalWeight / 2 > allVotedWeight) {
+            // Not enough weight has voted for simple majority
+            return (false, false);
+        } else if (
+            voteCount_[_propID].weightFor > voteCount_[_propID].weightAgainst
+        ) {
+            return (true, true);
+        }
+        return (true, false);
+    }
+
+    //--------------------------------------------------------------------------
+    // PUBLIC & EXTERNAL FUNCTIONS
+    //--------------------------------------------------------------------------
 
     function vote(
         uint256 _propID,
@@ -92,28 +137,4 @@ contract SimpleMajority is BaseSystem {
     // TODO call proposal with first vote (maybe votebooth calls?)
     //      to update state and ensure voting only happens in valid period.
 
-    function consensusReached(uint256 _propID)
-        external
-        view
-        returns (bool reached, bool votePassed)
-    {
-        IVoteWeight weightImplementation = IVoteWeight(
-            core_.getInstance(CoreLib.VOTE_WEIGHT)
-        );
-
-        uint256 totalWeight = weightImplementation.getTotalWeight(_propID);
-
-        uint256 allVotedWeight = voteCount_[_propID].weightFor +
-            voteCount_[_propID].weightAgainst;
-
-        if (totalWeight / 2 > allVotedWeight) {
-            // Not enough weight has voted for simple majority
-            return (false, false);
-        } else if (
-            voteCount_[_propID].weightFor > voteCount_[_propID].weightAgainst
-        ) {
-            return (true, true);
-        }
-        return (true, false);
-    }
 }

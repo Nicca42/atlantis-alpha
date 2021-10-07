@@ -29,8 +29,12 @@ interface ICoord {
         view
         returns (address);
 
+    function isVotable(uint256 _propID) external view returns (bool);
+
     function addSubSystem(bytes32 _subIdentifier, address _subImplementation)
         external;
+
+    function voting(uint256 _propID) external returns(bool);
 }
 
 // QS move all these interfaces to the base system
@@ -47,13 +51,19 @@ contract VotingBooth is BaseSystem {
 
     mapping(address => VoteType) private voteTypes_;
 
+    //--------------------------------------------------------------------------
+    // EVENTS
+    //--------------------------------------------------------------------------
+
     event VoteCast(address indexed voter, uint256 indexed propID, bytes vote);
 
     //--------------------------------------------------------------------------
     // CONSTRUCTOR
     //--------------------------------------------------------------------------
 
-    constructor(address _core) BaseSystem(CoreLib.VOTE_BOOTH, _core) {}
+    constructor(address _core, address _timer)
+        BaseSystem(CoreLib.VOTE_BOOTH, _core, _timer)
+    {}
 
     function initialise(
         address _initialVoteInstance,
@@ -74,7 +84,7 @@ contract VotingBooth is BaseSystem {
     function consensusReached(uint256 _propID)
         external
         view
-        returns (bool reached, bool votePassed) 
+        returns (bool reached, bool votePassed)
     {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
@@ -87,9 +97,10 @@ contract VotingBooth is BaseSystem {
     // PUBLIC & EXTERNAL FUNCTIONS
     //--------------------------------------------------------------------------
 
-    function vote(uint256 _propID, bytes memory _vote) external returns (bool) {
-        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
+    function vote(uint256 _propID, bytes memory _vote) external {
+        ICoord cordInstance = ICoord(core_.getInstance(CoreLib.COORD));
 
+        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
         IVoteType voteType = IVoteType(propInstance.getVoteType(_propID));
 
         require(
@@ -97,11 +108,17 @@ contract VotingBooth is BaseSystem {
             "Booth: Invalid vote type"
         );
 
-        // QS call prop instance to ensure prop is votable
+        require(
+            cordInstance.voting(_propID),
+            "Booth: Proposal is not votable"
+        );
 
         emit VoteCast(msg.sender, _propID, _vote);
 
-        return voteType.vote(_propID, _vote, msg.sender);
+        require(
+            voteType.vote(_propID, _vote, msg.sender),
+            "Booth: Vote failed"
+        );
     }
 
     function addVoteType(

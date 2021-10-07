@@ -4,6 +4,10 @@ pragma solidity 0.8.7;
 import "./BaseSystem.sol";
 
 contract Executables is BaseSystem {
+    //--------------------------------------------------------------------------
+    // STATE
+    //--------------------------------------------------------------------------
+
     struct Exe {
         address[] targets;
         uint256[] values;
@@ -14,13 +18,23 @@ contract Executables is BaseSystem {
 
     mapping(bytes32 => Exe) private dotExe_;
 
-    event MintExecutable(
-        bytes32 exeID,
-        address[] targets,
-        string description
-    );
+    //--------------------------------------------------------------------------
+    // EVENTS
+    //--------------------------------------------------------------------------
 
-    constructor(address _core) BaseSystem(CoreLib.EXE, _core) {}
+    event MintExecutable(bytes32 exeID, address[] targets, string description);
+
+    //--------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //--------------------------------------------------------------------------
+
+    constructor(address _core, address _timer)
+        BaseSystem(CoreLib.EXE, _core, _timer)
+    {}
+
+    //--------------------------------------------------------------------------
+    // VIEW & PURE FUNCTIONS
+    //--------------------------------------------------------------------------
 
     function getExe(bytes32 _exeID)
         external
@@ -64,6 +78,10 @@ contract Executables is BaseSystem {
             keccak256(abi.encode(_targets, _values, _callData, _description));
     }
 
+    //--------------------------------------------------------------------------
+    // PUBLIC & EXTERNAL FUNCTIONS
+    //--------------------------------------------------------------------------
+
     function createExe(
         address[] calldata _targets,
         string[] calldata _functionSignatures,
@@ -102,19 +120,16 @@ contract Executables is BaseSystem {
             creator: msg.sender
         });
 
-        emit MintExecutable(
-            exeID,
-            _targets,
-            _description
-        );
+        emit MintExecutable(exeID, _targets, _description);
 
         // TODO mint NFT token
     }
- 
-    function createPropExe(uint256 _propID, bytes32 _exeID, string memory _description)
-        external
-        returns (bytes32 propExeID)
-    {
+
+    function createPropExe(
+        uint256 _propID,
+        bytes32 _exeID,
+        string memory _description
+    ) external returns (bytes32 propExeID) {
         require(
             core_.getInstance(CoreLib.PROPS) == msg.sender,
             "Exe: Only prop can call"
@@ -125,9 +140,9 @@ contract Executables is BaseSystem {
         );
 
         propExeID = getExeId(
-            dotExe_[_exeID].targets, 
-            dotExe_[_exeID].values, 
-            dotExe_[_exeID].callData, 
+            dotExe_[_exeID].targets,
+            dotExe_[_exeID].values,
+            dotExe_[_exeID].callData,
             _description
         );
 
@@ -137,18 +152,14 @@ contract Executables is BaseSystem {
         );
 
         dotExe_[propExeID] = Exe({
-            targets: dotExe_[_exeID].targets, 
+            targets: dotExe_[_exeID].targets,
             values: dotExe_[_exeID].values,
             callData: dotExe_[_exeID].callData,
             description: _description,
             creator: dotExe_[_exeID].creator
         });
 
-        emit MintExecutable(
-            propExeID,
-            dotExe_[_exeID].targets,
-            _description
-        );
+        emit MintExecutable(propExeID, dotExe_[_exeID].targets, _description);
 
         return propExeID;
     }

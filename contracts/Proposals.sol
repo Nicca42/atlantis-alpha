@@ -29,7 +29,6 @@ interface ICoord {
 }
 
 contract Proposals is BaseSystem {
-
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -56,7 +55,7 @@ contract Proposals is BaseSystem {
         DEFEATED,
         QUEUED,
         EXECUTED
-        // Only successful props can be queued, no need for a state. 
+        // Only successful props can be queued, no need for a state.
     }
 
     struct Prop {
@@ -85,12 +84,13 @@ contract Proposals is BaseSystem {
 
     event NewProposal(uint256 indexed propID, address voteType, bytes32 exeID);
 
+    //--------------------------------------------------------------------------
+    // MODIFIERS
+    //--------------------------------------------------------------------------
+
     modifier onlyCoord() {
         address coordInstance = core_.getInstance(CoreLib.COORD);
-        require(
-            msg.sender == coordInstance,
-            "Prop: Only coord can call"
-        );
+        require(msg.sender == coordInstance, "Prop: Only coord can call");
         _;
     }
 
@@ -98,7 +98,25 @@ contract Proposals is BaseSystem {
     // CONSTRUCTOR
     //--------------------------------------------------------------------------
 
-    constructor(address _core) BaseSystem(CoreLib.PROPS, _core) {}
+    constructor(address _core, address _timer)
+        BaseSystem(CoreLib.PROPS, _core, _timer)
+    {}
+
+    function initialise(
+        uint256 _minDelay,
+        uint256 _startDelay,
+        uint256 _endDelay
+    ) external initializer {
+        require(_minDelay >= 15, "Prop: min cannot be 0");
+        require(
+            _startDelay >= _minDelay && _endDelay >= _minDelay,
+            "Prop: delays cannot be 0"
+        );
+
+        minDelay_ = _minDelay;
+        voteStartDelay_ = _startDelay;
+        voteEndDelay_ = _endDelay;
+    }
 
     //--------------------------------------------------------------------------
     // VIEW & PURE FUNCTIONS
@@ -108,23 +126,27 @@ contract Proposals is BaseSystem {
         return props_[_propID].voteType;
     }
 
-    function getExeOfProp(uint256 _propID) external view returns(bytes32) {
+    function getExeOfProp(uint256 _propID) external view returns (bytes32) {
         return props_[_propID].exeID;
     }
 
-    function getPropOfExe(bytes32 _exeID) external view returns(uint256) {
+    function getPropOfExe(bytes32 _exeID) external view returns (uint256) {
         return exeToProp_[_exeID];
     }
 
-    function getProposalInfo(uint256 _propID) external view returns(
-        string memory description,
-        address voteType,
-        bytes32 exeID,
-        PropState state,
-        uint256 voteStart,
-        uint256 voteEnd,
-        bool executedOrCanceled
-    ) {
+    function getProposalInfo(uint256 _propID)
+        external
+        view
+        returns (
+            string memory description,
+            address voteType,
+            bytes32 exeID,
+            PropState state,
+            uint256 voteStart,
+            uint256 voteEnd,
+            bool executedOrCanceled
+        )
+    {
         return (
             props_[_propID].description,
             props_[_propID].voteType,
@@ -136,13 +158,17 @@ contract Proposals is BaseSystem {
         );
     }
 
-    function getPropVotables(uint256 _propID) external view returns(
-        PropState state,
-        uint256 voteStart,
-        uint256 voteEnd,
-        bool executedOrCanceled
-    ) {
-        return(
+    function getPropVotables(uint256 _propID)
+        external
+        view
+        returns (
+            PropState state,
+            uint256 voteStart,
+            uint256 voteEnd,
+            bool executedOrCanceled
+        )
+    {
+        return (
             props_[_propID].state,
             props_[_propID].voteStart,
             props_[_propID].voteEnd,
@@ -173,11 +199,9 @@ contract Proposals is BaseSystem {
 
         require(voteType != address(0), "Prop: Invalid vote type");
 
-        string memory newDescription = string(abi.encodePacked(
-            propID, 
-            _exeID,
-            block.timestamp
-        ));
+        string memory newDescription = string(
+            abi.encodePacked(propID, _exeID, getCurrentTime())
+        );
 
         bytes32 propExeID = exeInstance.createPropExe(
             propID,
@@ -186,12 +210,9 @@ contract Proposals is BaseSystem {
         );
 
         require(propExeID != bytes32(0), "Prop: Exe does not exist");
-        require(
-            exeToProp_[propExeID] == 0,
-            "Prop: Exe ID already associated"
-        );
+        require(exeToProp_[propExeID] == 0, "Prop: Exe ID already associated");
 
-        uint256 voteStart = block.timestamp + voteStartDelay_;
+        uint256 voteStart = getCurrentTime() + voteStartDelay_;
 
         props_[propID] = Prop({
             description: _description,
@@ -238,10 +259,7 @@ contract Proposals is BaseSystem {
      * @dev     These mins are time stamps. The min delay cannot be smaller than
      *          15 (safe minimum).
      */
-    function updateDelays(
-        uint256 _startDelay, 
-        uint256 _endDelay
-    )
+    function updateDelays(uint256 _startDelay, uint256 _endDelay)
         external
         onlyCore
     {
@@ -254,18 +272,26 @@ contract Proposals is BaseSystem {
         voteEndDelay_ = _endDelay;
     }
 
-
     //--------------------------------------------------------------------------
     // ONLY COORDINATOR
     //
     // Below functions can only be called by the coordinator.
 
+    function propVoting(uint256 _propID) external onlyCoord {
+        require(
+            props_[_propID].state == PropState.Created,
+            "Prop: Invalid state movement"
+        );
+
+        props_[_propID].state = PropState.ActiveVoting;
+    }
+
     /**
      * @param   _propID ID of the prop.
-     * @notice  Updates the proposals state to Expired. Only the coordinator 
-     *          can call this function. 
-     *          A proposal expires if it does not reach the minimum consensus 
-     *          specifications before the vote window expires. 
+     * @notice  Updates the proposals state to Expired. Only the coordinator
+     *          can call this function.
+     *          A proposal expires if it does not reach the minimum consensus
+     *          specifications before the vote window expires.
      */
     function propExpire(uint256 _propID) external onlyCoord {
         require(
@@ -278,10 +304,10 @@ contract Proposals is BaseSystem {
 
     /**
      * @param   _propID ID of the prop.
-     * @notice  Updates the proposals state to Defeated. Only the coordinator 
-     *          can call this function. 
-     *          A proposal is defeated if it reaches the minimum consensus 
-     *          specifications but is voted against. 
+     * @notice  Updates the proposals state to Defeated. Only the coordinator
+     *          can call this function.
+     *          A proposal is defeated if it reaches the minimum consensus
+     *          specifications but is voted against.
      */
     function propDefeated(uint256 _propID) external onlyCoord {
         require(
@@ -294,12 +320,12 @@ contract Proposals is BaseSystem {
 
     /**
      * @param   _propID ID of the prop.
-     * @notice  Updates the proposals state to Queued. Only the coordinator 
-     *          can call this function. 
-     *          A proposal is queued if it reaches the minimum consensus 
+     * @notice  Updates the proposals state to Queued. Only the coordinator
+     *          can call this function.
+     *          A proposal is queued if it reaches the minimum consensus
      *          specifications and is voted for. Once queued a proposal can be
-     *          executed. If a proposal does not have an executable, it can 
-     *          still be "executed" to update the state in accordance. 
+     *          executed. If a proposal does not have an executable, it can
+     *          still be "executed" to update the state in accordance.
      */
     function propQueued(uint256 _propID) external onlyCoord {
         require(
@@ -312,13 +338,13 @@ contract Proposals is BaseSystem {
 
     /**
      * @param   _propID ID of the prop.
-     * @notice  Updates the proposals state to Executed. Only the coordinator 
-     *          can call this function. 
-     *          A proposal is executed if it reaches the minimum consensus 
-     *          specifications, is voted for and then executed. If a proposal 
-     *          has a related executable this executable will be run in the 
+     * @notice  Updates the proposals state to Executed. Only the coordinator
+     *          can call this function.
+     *          A proposal is executed if it reaches the minimum consensus
+     *          specifications, is voted for and then executed. If a proposal
+     *          has a related executable this executable will be run in the
      *          context of the core. If there is no associated executable, the
-     *          status of the proposal will be updated regardless. 
+     *          status of the proposal will be updated regardless.
      */
     function propExecuted(uint256 _propID) external onlyCoord {
         require(
@@ -328,5 +354,4 @@ contract Proposals is BaseSystem {
 
         props_[_propID].state = PropState.Executed;
     }
-
 }
