@@ -3,6 +3,12 @@ pragma solidity 0.8.7;
 
 import "./CoreLib.sol";
 import "./interfaces/ICore.sol";
+import "./interfaces/ICoord.sol";
+import "./interfaces/IProp.sol";
+import "./interfaces/IExe.sol";
+import "./interfaces/IBooth.sol";
+import "./interfaces/IWeight.sol";
+import "./votingTypes/IVoteType.sol";
 import "./openZeppelin/Initializable.sol";
 import "./test/Testable.sol";
 

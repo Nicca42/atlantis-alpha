@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/BaseSystem.sol": {
-      "lastModificationDate": 1633611465168,
-      "contentHash": "248d6cb556373947d4ceedc18c5ff5e7",
+      "lastModificationDate": 1633622031043,
+      "contentHash": "0ec6f3ce968d8249e0b0009ad5bf8188",
       "sourceName": "contracts/BaseSystem.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -32,6 +32,12 @@
       "imports": [
         "./CoreLib.sol",
         "./interfaces/ICore.sol",
+        "./interfaces/ICoord.sol",
+        "./interfaces/IProp.sol",
+        "./interfaces/IExe.sol",
+        "./interfaces/IBooth.sol",
+        "./interfaces/IWeight.sol",
+        "./votingTypes/IVoteType.sol",
         "./openZeppelin/Initializable.sol",
         "./test/Testable.sol"
       ],
@@ -112,6 +118,222 @@
       ],
       "artifacts": [
         "ICore"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/interfaces/ICoord.sol": {
+      "lastModificationDate": 1633621839443,
+      "contentHash": "59a0a3502d8fb61d42afeebdd388471c",
+      "sourceName": "contracts/interfaces/ICoord.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "ICoord"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/interfaces/IProp.sol": {
+      "lastModificationDate": 1633621912511,
+      "contentHash": "8024b7b43ff26e782e1210bae4b8567e",
+      "sourceName": "contracts/interfaces/IProp.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "IProp"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/interfaces/IExe.sol": {
+      "lastModificationDate": 1633621808444,
+      "contentHash": "7940b8e2497f5133bd7357954e4eabf7",
+      "sourceName": "contracts/interfaces/IExe.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "IExe"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/interfaces/IBooth.sol": {
+      "lastModificationDate": 1633621940714,
+      "contentHash": "56a2bb865258b1d3c76b139862817263",
+      "sourceName": "contracts/interfaces/IBooth.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "IBooth"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/interfaces/IWeight.sol": {
+      "lastModificationDate": 1633621577006,
+      "contentHash": "406dfe92e47e58c72da221d1b32290b4",
+      "sourceName": "contracts/interfaces/IWeight.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "IWeight"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/votingTypes/IVoteType.sol": {
+      "lastModificationDate": 1633621696735,
+      "contentHash": "d8e23826b58934a86ee23c0c22f13dd9",
+      "sourceName": "contracts/votingTypes/IVoteType.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "IVoteType"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/openZeppelin/Initializable.sol": {
@@ -225,8 +447,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/votingTypes/SimpleMajority.sol": {
-      "lastModificationDate": 1633611655923,
-      "contentHash": "6df3c6b9c7659b794ebaccb28306a1ad",
+      "lastModificationDate": 1633622472212,
+      "contentHash": "38ad494f5c6b6aaa95d95e78f600654e",
       "sourceName": "contracts/votingTypes/SimpleMajority.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -253,19 +475,19 @@
         }
       },
       "imports": [
-        "../BaseSystem.sol"
+        "../BaseSystem.sol",
+        "./IVoteType.sol"
       ],
       "versionPragmas": [
         "0.8.7"
       ],
       "artifacts": [
-        "IVoteWeight",
         "SimpleMajority"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/VotingBooth.sol": {
-      "lastModificationDate": 1633614378330,
-      "contentHash": "c0becc6b9470ac269c826c496b5982eb",
+      "lastModificationDate": 1633622428258,
+      "contentHash": "40af458e13b518c3ecae453c9ebd9ae2",
       "sourceName": "contracts/VotingBooth.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -298,15 +520,12 @@
         "0.8.7"
       ],
       "artifacts": [
-        "ICoord",
-        "IProp",
-        "IVoteType",
         "VotingBooth"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/VoteWeight.sol": {
-      "lastModificationDate": 1633612023032,
-      "contentHash": "736aa57d7348ae3ddbc9371649aef490",
+      "lastModificationDate": 1633622408774,
+      "contentHash": "3423d4d2e098ade50e317ce1eaeb81b3",
       "sourceName": "contracts/VoteWeight.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -380,8 +599,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Proposals.sol": {
-      "lastModificationDate": 1633621175642,
-      "contentHash": "2ba634d67d173ec9ef061155b5c89cc2",
+      "lastModificationDate": 1633622347056,
+      "contentHash": "87394d6a7ea30473d4e342f26899af78",
       "sourceName": "contracts/Proposals.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -414,14 +633,12 @@
         "0.8.7"
       ],
       "artifacts": [
-        "ICoord",
-        "IExe",
         "Proposals"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Executables.sol": {
-      "lastModificationDate": 1633620317890,
-      "contentHash": "58a31b39c83868bf050b10708976ee70",
+      "lastModificationDate": 1633622261142,
+      "contentHash": "7a8a752229a6dc8d2f37c621637940ae",
       "sourceName": "contracts/Executables.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -458,8 +675,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Coordinator.sol": {
-      "lastModificationDate": 1633621360946,
-      "contentHash": "5040965c20859ec015f891fbe92fd552",
+      "lastModificationDate": 1633622213517,
+      "contentHash": "ffcfb0c79179ba17b1a5a71bb0d22951",
       "sourceName": "contracts/Coordinator.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -492,9 +709,7 @@
         "0.8.7"
       ],
       "artifacts": [
-        "Coordinator",
-        "IBooth",
-        "IProp"
+        "Coordinator"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/test/TestExecutable.sol": {
@@ -536,8 +751,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Core.sol": {
-      "lastModificationDate": 1633615274512,
-      "contentHash": "e62b224006ded1219df5894f0da400d6",
+      "lastModificationDate": 1633621848659,
+      "contentHash": "47a6eea9c47ff061ace3861db11abbd2",
       "sourceName": "contracts/Core.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -565,15 +780,15 @@
       },
       "imports": [
         "./CoreLib.sol",
-        "./openZeppelin/Initializable.sol"
+        "./openZeppelin/Initializable.sol",
+        "./interfaces/IExe.sol",
+        "./interfaces/ICoord.sol"
       ],
       "versionPragmas": [
         "0.8.7"
       ],
       "artifacts": [
-        "Core",
-        "ICoord",
-        "IExe"
+        "Core"
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/openZeppelin/Token.sol": {
@@ -762,42 +977,6 @@
       ],
       "artifacts": [
         "Context"
-      ]
-    },
-    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/votingTypes/IVoteType.sol": {
-      "lastModificationDate": 1632946462205,
-      "contentHash": "069bf0ba3f25f62b5c142dc17f0458e1",
-      "sourceName": "contracts/votingTypes/IVoteType.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "devdoc",
-                "userdoc"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.7"
-      ],
-      "artifacts": [
-        "IVoteType"
       ]
     }
   }

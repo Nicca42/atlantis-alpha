@@ -2,16 +2,9 @@
 pragma solidity 0.8.7;
 
 import "../BaseSystem.sol";
+import "./IVoteType.sol";
 
-interface IVoteWeight {
-    function getVoteWeight(uint256 _propID, address _voter)
-        external
-        returns (uint256);
-
-    function getTotalWeight(uint256 _propID) external view returns (uint256);
-}
-
-contract SimpleMajority is BaseSystem {
+contract SimpleMajority is BaseSystem, IVoteType {
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -72,9 +65,10 @@ contract SimpleMajority is BaseSystem {
     function consensusReached(uint256 _propID)
         external
         view
+        override
         returns (bool reached, bool votePassed)
     {
-        IVoteWeight weightImplementation = IVoteWeight(
+        IWeight weightImplementation = IWeight(
             core_.getInstance(CoreLib.VOTE_WEIGHT)
         );
 
@@ -102,7 +96,7 @@ contract SimpleMajority is BaseSystem {
         uint256 _propID,
         bytes memory _vote,
         address _voter
-    ) external onlyVotingBooth returns (bool) {
+    ) external override onlyVotingBooth returns (bool) {
         require(
             !voteCount_[_propID].hasVoted[_voter],
             "Booth: Voter Has voted for prop"
@@ -112,7 +106,7 @@ contract SimpleMajority is BaseSystem {
         voteCount_[_propID].hasVoted[_voter] = true;
         voteCount_[_propID].voterTurnout += 1;
 
-        IVoteWeight weightImplementation = IVoteWeight(
+        IWeight weightImplementation = IWeight(
             core_.getInstance(CoreLib.VOTE_WEIGHT)
         );
 

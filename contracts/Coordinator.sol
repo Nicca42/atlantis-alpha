@@ -3,50 +3,7 @@ pragma solidity 0.8.7;
 
 import "./BaseSystem.sol";
 
-interface IProp {
-    // QS move to base
-    enum PropStatus {
-        NO_PROP,
-        CREATED,
-        VOTING,
-        QUEUED,
-        EXECUTED,
-        EXPIRED,
-        DEFEATED
-        // Only successful props can be queued, no need for a state.
-    }
-
-    function getPropVotables(uint256 _propID)
-        external
-        view
-        returns (
-            PropStatus state,
-            uint256 voteStart,
-            uint256 voteEnd,
-            bool executedOrCanceled
-        );
-
-    function getPropOfExe(bytes32 _exeID) external view returns (uint256);
-
-    function propVoting(uint256 _propID) external;
-
-    function propExpire(uint256 _propID) external;
-
-    function propDefeated(uint256 _propID) external;
-
-    function propQueued(uint256 _propID) external;
-
-    function propExecuted(uint256 _propID) external;
-}
-
-interface IBooth {
-    function consensusReached(uint256 _propID)
-        external
-        view
-        returns (bool reached, bool votePassed);
-}
-
-contract Coordinator is BaseSystem {
+contract Coordinator is BaseSystem, ICoord {
 
     //--------------------------------------------------------------------------
     // STATE
@@ -77,7 +34,7 @@ contract Coordinator is BaseSystem {
      *          proposal the coordinator will be able to look up and verify it's
      *          executable status.
      */
-    function isExecutable(bytes32 _exeID) external view returns (bool) {
+    function isExecutable(bytes32 _exeID) external view override returns (bool) {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         uint256 propID = propInstance.getPropOfExe(_exeID);
@@ -110,7 +67,7 @@ contract Coordinator is BaseSystem {
         // Don't need to return false, will return false if not returning true.
     }
 
-    function setExecute(bytes32 _exeID) external onlyCore {
+    function setExecute(bytes32 _exeID) external override onlyCore {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         uint256 propID = propInstance.getPropOfExe(_exeID);
@@ -141,7 +98,7 @@ contract Coordinator is BaseSystem {
         propInstance.propExecuted(propID);
     }
 
-    function isVotable(uint256 _propID) external view returns (bool) {
+    function isVotable(uint256 _propID) external view override returns (bool) {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         (
@@ -167,7 +124,7 @@ contract Coordinator is BaseSystem {
         // Don't need to return false, will return false if not returning true.
     }
 
-    function voting(uint256 _propID) external returns(bool) {
+    function voting(uint256 _propID) external override returns(bool) {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
         IBooth boothInstance = IBooth(core_.getInstance(CoreLib.VOTE_BOOTH));
 
@@ -206,6 +163,7 @@ contract Coordinator is BaseSystem {
     function getSubSystem(address _system, bytes32 _subIdentifier)
         external
         view
+        override
         returns (address)
     {
         return subSystems_[_system][_subIdentifier];
@@ -217,6 +175,7 @@ contract Coordinator is BaseSystem {
 
     function addSubSystem(bytes32 _subIdentifier, address _subImplementation)
         external
+        override
     {
         bytes32 identifier = BaseSystem(msg.sender).IDENTIFIER();
         address systemRegistered = core_.getInstance(identifier);

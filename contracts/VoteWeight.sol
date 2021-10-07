@@ -6,7 +6,7 @@ import "./openZeppelin/IERC20.sol";
 
 // Use ERC20Votes for snapshot token balances
 
-contract VoteWeight is BaseSystem {
+contract VoteWeight is BaseSystem, IWeight {
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -48,6 +48,7 @@ contract VoteWeight is BaseSystem {
     function getVoteWeight(uint256 _propID, address _voter)
         external
         view
+        override
         returns (uint256)
     {
         // TODO if first check for a prop make snapshot
@@ -65,7 +66,7 @@ contract VoteWeight is BaseSystem {
         }
     }
 
-    function getTotalWeight(uint256 _propID) external view returns (uint256) {
+    function getTotalWeight(uint256 _propID) external view override returns (uint256) {
         // TODO this should use the snapshot. Super insecure to do it like this
         return (govToken_.totalSupply() + repToken_.totalSupply() / 2);
     }

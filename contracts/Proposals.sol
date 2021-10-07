@@ -3,49 +3,10 @@ pragma solidity 0.8.7;
 
 import "./BaseSystem.sol";
 
-// QS move to base
-interface IExe {
-    function getExe(bytes32 _exeID)
-        external
-        view
-        returns (
-            address[] memory targets,
-            bytes[] memory callData,
-            uint256[] memory values
-        );
-
-    function createPropExe(
-        uint256 _propID,
-        bytes32 _exeID,
-        string memory _description
-    ) external returns (bytes32 propExeID);
-}
-
-interface ICoord {
-    function getSubSystem(address _system, bytes32 _subIdentifier)
-        external
-        view
-        returns (address);
-}
-
-contract Proposals is BaseSystem {
+contract Proposals is BaseSystem, IProp {
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
-
-    // QS move to base
-
-    // QS replace system wide with this
-    enum PropStatus {
-        NO_PROP,
-        CREATED,
-        VOTING,
-        QUEUED,
-        EXECUTED,
-        EXPIRED,
-        DEFEATED
-        // Only successful props can be queued, no need for a state.
-    }
 
     struct Prop {
         string description;
@@ -111,7 +72,7 @@ contract Proposals is BaseSystem {
     // VIEW & PURE FUNCTIONS
     //--------------------------------------------------------------------------
 
-    function getVoteType(uint256 _propID) external view returns (address) {
+    function getVoteType(uint256 _propID) external view override returns (address) {
         return props_[_propID].voteType;
     }
 
@@ -119,7 +80,7 @@ contract Proposals is BaseSystem {
         return props_[_propID].exeID;
     }
 
-    function getPropOfExe(bytes32 _exeID) external view returns (uint256) {
+    function getPropOfExe(bytes32 _exeID) external view override returns (uint256) {
         return exeToProp_[_exeID];
     }
 
@@ -150,6 +111,7 @@ contract Proposals is BaseSystem {
     function getPropVotables(uint256 _propID)
         external
         view
+        override
         returns (
             PropStatus state,
             uint256 voteStart,
@@ -266,7 +228,7 @@ contract Proposals is BaseSystem {
     //
     // Below functions can only be called by the coordinator.
 
-    function propVoting(uint256 _propID) external onlyCoord {
+    function propVoting(uint256 _propID) external override onlyCoord {
         require(
             props_[_propID].state == PropStatus.CREATED,
             "Prop: Invalid state movement"
@@ -282,7 +244,7 @@ contract Proposals is BaseSystem {
      *          A proposal expires if it does not reach the minimum consensus
      *          specifications before the vote window expires.
      */
-    function propExpire(uint256 _propID) external onlyCoord {
+    function propExpire(uint256 _propID) external override onlyCoord {
         require(
             props_[_propID].state == PropStatus.VOTING,
             "Prop: Invalid state movement"
@@ -299,7 +261,7 @@ contract Proposals is BaseSystem {
      *          A proposal is defeated if it reaches the minimum consensus
      *          specifications but is voted against.
      */
-    function propDefeated(uint256 _propID) external onlyCoord {
+    function propDefeated(uint256 _propID) external override onlyCoord {
         require(
             props_[_propID].state == PropStatus.VOTING,
             "Prop: Invalid state movement"
@@ -318,7 +280,7 @@ contract Proposals is BaseSystem {
      *          executed. If a proposal does not have an executable, it can
      *          still be "executed" to update the state in accordance.
      */
-    function propQueued(uint256 _propID) external onlyCoord {
+    function propQueued(uint256 _propID) external override onlyCoord {
         require(
             props_[_propID].state == PropStatus.VOTING,
             "Prop: Invalid state movement"
@@ -337,7 +299,7 @@ contract Proposals is BaseSystem {
      *          context of the core. If there is no associated executable, the
      *          status of the proposal will be updated regardless.
      */
-    function propExecuted(uint256 _propID) external onlyCoord {
+    function propExecuted(uint256 _propID) external override onlyCoord {
         require(
             props_[_propID].state == PropStatus.QUEUED,
             "Prop: Invalid state movement"

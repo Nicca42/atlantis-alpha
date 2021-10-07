@@ -3,42 +3,8 @@ pragma solidity 0.8.7;
 
 import "./CoreLib.sol";
 import "./openZeppelin/Initializable.sol";
-
-interface IExe {
-    /**
-     * @param   _exeID ID of the executable to get the data of.
-     * @return  targets The array of target addresses.
-     * @return  callData The array of calldata to execute at each address.
-     * @return  values The array of values (in native tokens) to pass through
-     *          with each call. Note that these values are outside of any gas
-     *          requirements and costs.
-     */
-    function getExe(bytes32 _exeID)
-        external
-        view
-        returns (
-            address[] memory targets,
-            bytes[] memory callData,
-            uint256[] memory values
-        );
-}
-
-interface ICoord {
-    /**
-     * @param   _exeID ID of the executable to check.
-     * @notice  This function will check that the specified proposal has reached
-     *          quorum, and that it has passed. If the proposal has not reached
-     *          quorum or has not passed this will return false.
-     * @dev     The reason we use Exe IDs here and not Prop IDs is that
-     *          executables may be valid for execution outside of a proposal
-     *          (e.g an approved recurring payment). If the exe is tied to a
-     *          proposal the coordinator will be able to look up and verify it's
-     *          executable status.
-     */
-    function isExecutable(bytes32 _exeID) external view returns (bool);
-
-    function setExecute(bytes32 _exeID) external;
-}
+import "./interfaces/IExe.sol";
+import "./interfaces/ICoord.sol";
 
 /**
  * @author  Veronica | @Nicca42 - GitHub | @vonnie610 - Twitter

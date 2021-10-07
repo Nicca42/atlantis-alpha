@@ -3,43 +3,10 @@ pragma solidity 0.8.7;
 
 import "./BaseSystem.sol";
 
-// Use ERC20Votes for delegation of votes
-// GovernerVotes for where to hook into token
+// TODO Use ERC20Votes for delegation of votes
+// TODO GovernerVotes for where to hook into token
 
-interface IProp {
-    function getVoteType(uint256 _propID) external view returns (address);
-}
-
-interface IVoteType {
-    function vote(
-        uint256 _propID,
-        bytes memory _vote,
-        address _voter
-    ) external returns (bool);
-
-    function consensusReached(uint256 _propID)
-        external
-        view
-        returns (bool reached, bool votePassed);
-}
-
-interface ICoord {
-    function getSubSystem(address _system, bytes32 _subIdentifier)
-        external
-        view
-        returns (address);
-
-    function isVotable(uint256 _propID) external view returns (bool);
-
-    function addSubSystem(bytes32 _subIdentifier, address _subImplementation)
-        external;
-
-    function voting(uint256 _propID) external returns(bool);
-}
-
-// QS move all these interfaces to the base system
-
-contract VotingBooth is BaseSystem {
+contract VotingBooth is BaseSystem, IBooth {
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -84,6 +51,7 @@ contract VotingBooth is BaseSystem {
     function consensusReached(uint256 _propID)
         external
         view
+        override
         returns (bool reached, bool votePassed)
     {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));

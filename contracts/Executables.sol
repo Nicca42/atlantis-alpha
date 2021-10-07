@@ -3,7 +3,7 @@ pragma solidity 0.8.7;
 
 import "./BaseSystem.sol";
 
-contract Executables is BaseSystem {
+contract Executables is BaseSystem, IExe {
     //--------------------------------------------------------------------------
     // STATE
     //--------------------------------------------------------------------------
@@ -39,6 +39,7 @@ contract Executables is BaseSystem {
     function getExe(bytes32 _exeID)
         external
         view
+        override
         returns (
             address[] memory targets,
             bytes[] memory callData,
@@ -129,7 +130,7 @@ contract Executables is BaseSystem {
         uint256 _propID,
         bytes32 _exeID,
         string memory _description
-    ) external returns (bytes32 propExeID) {
+    ) external override returns (bytes32 propExeID) {
         require(
             core_.getInstance(CoreLib.PROPS) == msg.sender,
             "Exe: Only prop can call"
