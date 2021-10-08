@@ -196,7 +196,7 @@ contract Coordinator is BaseSystem, ICoord {
         ) = propInstance.getPropVotables(_propID);
 
         require(
-            voteEnd >= getCurrentTime() && !executedOrCanceled,
+            voteEnd <= getCurrentTime() && !executedOrCanceled,
             "Coord: voting active or executed"
         );
 

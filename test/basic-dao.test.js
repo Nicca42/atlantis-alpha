@@ -491,7 +491,7 @@ describe("Basic DAO testing", () => {
             );
         });
 
-        it("Proposal ties correctly", async () => {
+        it("Proposal ties correctly (fails)", async () => {
             await govToken.mint(voter_four.address, 10);
             await repToken.mint(voter_four.address, 1000);
 
@@ -505,20 +505,16 @@ describe("Basic DAO testing", () => {
             let consensus1 = await simpleMajority.consensusReached(propID);            
             let currentVote = await simpleMajority.getCurrentVote(propID);
 
-            console.log(currentVote.weightAgainst.toString())
-            console.log(currentVote.weightFor.toString())
-            console.log(currentVote.voterTurnout.toString())
-
-            // expect(
-            //     currentVote.weightAgainst.toString()
-            // ).to.equal(
-            //     '2121'
-            // );
-            // expect(
-            //     currentVote.weightFor.toString()
-            // ).to.equal(
-            //     '110'
-            // );
+            expect(
+                currentVote.weightAgainst.toString()
+            ).to.equal(
+                '1010'
+            );
+            expect(
+                currentVote.weightFor.toString()
+            ).to.equal(
+                '1010'
+            );
             expect(
                 currentVote.voterTurnout.toString()
             ).to.equal(
@@ -547,11 +543,160 @@ describe("Basic DAO testing", () => {
         });
     });
 
-    describe("Coordinating testing", async () => {
-        // TODO test for state moving correctly on exe
-            // expire
-            // defeat 
-            // queued
+    describe("Queueing testing", async () => {
+        beforeEach(async () => {
+            let exe = await (await executable.createExe(
+                [testExecutable.address, testExecutable.address],
+                testSettings.executable.funcSig,
+                testSettings.executable.bytes,
+                testSettings.executable.values,
+                testSettings.executable.description
+            )).wait();
+            exeID = exe.events[0].args.exeID;
+
+            let proposal = await (await proposals.connect(proposer).createPropWithExe(
+                "Proposal to distribute reputation rewards to proposer.",
+                testSettings.voteType.id,
+                exeID
+            )).wait();
+
+            propID = proposal.events[1].args.propID.toString();
+            propExeID = proposal.events[1].args.exeID.toString();
+
+            status = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(status.voteStart); 
+        });
+
+        it("Can't queue passed proposal before voting ends", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+            
+            await expect(
+                coordinator.connect(proposer).queueProposal(propID)
+            ).to.be.revertedWith('Coord: voting active or executed');
+        });
+
+        it("Can queue passed proposal", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+            
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID)
+            
+            status = await proposals.getPropVotables(propID);
+
+            expect(
+                statusBefore.state
+            ).to.equal(
+                2
+            );
+            expect(
+                statusBefore.spent
+            ).to.equal(
+                false
+            );
+            expect(
+                status.state
+            ).to.equal(
+                3
+            );
+            expect(
+                status.spent
+            ).to.equal(
+                false
+            );
+        });
+
+        it("Can defeat failed proposal", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteAgainst);
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            await votingBooth.connect(proposer).vote(propID, voteAgainst);
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+            
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID)
+            
+            status = await proposals.getPropVotables(propID);
+
+            expect(
+                statusBefore.state
+            ).to.equal(
+                2
+            );
+            expect(
+                statusBefore.spent
+            ).to.equal(
+                false
+            );
+            expect(
+                status.state
+            ).to.equal(
+                6
+            );
+            expect(
+                status.spent
+            ).to.equal(
+                true
+            );
+        });
+
+        it("Can expire proposal not reaching quorum", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID)
+            
+            status = await proposals.getPropVotables(propID);
+
+            console.log(statusBefore)
+            console.log(status)
+
+            expect(
+                statusBefore.state
+            ).to.equal(
+                2
+            );
+            expect(
+                statusBefore.spent
+            ).to.equal(
+                false
+            );
+            expect(
+                status.state
+            ).to.equal(
+                5
+            );
+            expect(
+                status.spent
+            ).to.equal(
+                true
+            );
+        });
+    });
+
+    describe("Executing testing", async () => {
+        
     });
 
     // it("Can execute executable", async () => {
