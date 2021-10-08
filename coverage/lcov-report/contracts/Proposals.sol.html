@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/Proposals.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> Proposals.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">84.09% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>37/44</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">46.15% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>12/26</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">75% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">84.44% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>38/45</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">94×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity 0.8.7;
+&nbsp;
+import "./BaseSystem.sol";
+&nbsp;
+contract Proposals is BaseSystem, IProp {
+    //--------------------------------------------------------------------------
+    // STATE
+    //--------------------------------------------------------------------------
+&nbsp;
+    struct Prop {
+        string description;
+        address voteType;
+        bytes32 exeID;
+        PropStatus state;
+        uint256 voteStart;
+        uint256 voteEnd;
+        bool spent;
+    }
+&nbsp;
+    mapping(uint256 =&gt; Prop) private props_;
+    // Exe IDs to related props
+    mapping(bytes32 =&gt; uint256) private exeToProp_;
+&nbsp;
+    uint256 private propIDCounter_;
+&nbsp;
+    uint256 private voteStartDelay_;
+    uint256 private voteEndDelay_;
+    uint256 private minDelay_;
+&nbsp;
+    //--------------------------------------------------------------------------
+    // EVENTS
+    //--------------------------------------------------------------------------
+&nbsp;
+    event NewProposal(uint256 indexed propID, address voteType, bytes32 exeID);
+&nbsp;
+    //--------------------------------------------------------------------------
+    // MODIFIERS
+    //--------------------------------------------------------------------------
+&nbsp;
+    modifier onlyCoord() {
+        address coordInstance = core_.getInstance(CoreLib.COORD);
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(msg.sender == coordInstance, "Prop: Only coord can call");
+        _;
+    }
+&nbsp;
+    //--------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //--------------------------------------------------------------------------
+&nbsp;
+    constructor(address _core, address _timer)
+        BaseSystem(CoreLib.PROPS, _core, _timer)
+    {}
+&nbsp;
+    function initialise(
+        uint256 _minDelay,
+        uint256 _startDelay,
+        uint256 _endDelay
+    ) external initializer {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(_minDelay &gt;= 15, "Prop: min cannot be 0");
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            _startDelay &gt;= _minDelay &amp;&amp; _endDelay &gt;= _minDelay,
+            "Prop: delays cannot be 0"
+        );
+&nbsp;
+        minDelay_ = _minDelay;
+        voteStartDelay_ = _startDelay;
+        voteEndDelay_ = _endDelay;
+    }
+&nbsp;
+    //--------------------------------------------------------------------------
+    // VIEW &amp; PURE FUNCTIONS
+    //--------------------------------------------------------------------------
+&nbsp;
+    function getVoteType(uint256 _propID) external view override returns (address) {
+        return props_[_propID].voteType;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getExeOfProp(uint256 _propID) external view returns (bytes32) {</span>
+<span class="cstat-no" title="statement not covered" >        return props_[_propID].exeID;</span>
+    }
+&nbsp;
+    function getPropOfExe(bytes32 _exeID) external view override returns (uint256) {
+        return exeToProp_[_exeID];
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getProposalInfo(uint256 _propID)</span>
+        external
+        view
+        returns (
+            string memory description,
+            address voteType,
+            bytes32 exeID,
+            PropStatus state,
+            uint256 voteStart,
+            uint256 voteEnd,
+            bool spent
+        )
+    {
+<span class="cstat-no" title="statement not covered" >        return (</span>
+            props_[_propID].description,
+            props_[_propID].voteType,
+            props_[_propID].exeID,
+            props_[_propID].state,
+            props_[_propID].voteStart,
+            props_[_propID].voteEnd,
+            props_[_propID].spent
+        );
+    }
+&nbsp;
+    function getPropVotables(uint256 _propID)
+        external
+        view
+        override
+        returns (
+            PropStatus state,
+            uint256 voteStart,
+            uint256 voteEnd,
+            bool spent
+        )
+    {
+        return (
+            props_[_propID].state,
+            props_[_propID].voteStart,
+            props_[_propID].voteEnd,
+            props_[_propID].spent
+        );
+    }
+&nbsp;
+    //--------------------------------------------------------------------------
+    // PUBLIC &amp; EXTERNAL FUNCTIONS
+    //--------------------------------------------------------------------------
+&nbsp;
+    function createPropWithExe(
+        string calldata _description,
+        bytes32 _voteTypeID,
+        bytes32 _exeID
+    ) external returns (uint256 propID) {
+        IExe exeInstance = IExe(core_.getInstance(CoreLib.EXE));
+        ICoord coordInstance = ICoord(core_.getInstance(CoreLib.COORD));
+&nbsp;
+        propIDCounter_ += 1;
+        propID = propIDCounter_;
+&nbsp;
+        address voteType = coordInstance.getSubSystem(
+            core_.getInstance(CoreLib.VOTE_BOOTH),
+            _voteTypeID
+        );
+&nbsp;
+        require(voteType != address(0), "Prop: Invalid vote type");
+&nbsp;
+        string memory newDescription = string(
+            abi.encodePacked(propID, _exeID, getCurrentTime())
+        );
+&nbsp;
+        bytes32 propExeID = exeInstance.createPropExe(
+            propID,
+            _exeID,
+            newDescription
+        );
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(propExeID != bytes32(0), "Prop: Exe does not exist");
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(exeToProp_[propExeID] == 0, "Prop: Exe ID already associated");
+&nbsp;
+        uint256 voteStart = getCurrentTime() + voteStartDelay_;
+&nbsp;
+        props_[propID] = Prop({
+            description: _description,
+            voteType: voteType,
+            exeID: propExeID,
+            state: PropStatus.CREATED,
+            voteStart: voteStart,
+            voteEnd: voteStart + voteEndDelay_,
+            spent: false
+        });
+        exeToProp_[propExeID] = propID;
+&nbsp;
+        emit NewProposal(propID, voteType, propExeID);
+&nbsp;
+        // TODO proposal snapshot in vote weight
+    }
+&nbsp;
+    //--------------------------------------------------------------------------
+    // ONLY CORE
+    //
+    // Below functions can only be called by this contract. These functions can
+    // only be executed by successfully running an executable through the
+    // `execute` function.
+&nbsp;
+    /**
+     * @param   _newMin The new minimum delay for normal proposals.
+     * @notice  This minimum delay counts for both voting starting after a
+     *          proposal is proposed, as well as how long the delay is after it
+     *          has started till voting closes. Only the core can modify.
+     * @dev     These mins are time stamps. The min delay cannot be smaller than
+     *          15 (safe minimum).
+     */
+<span class="fstat-no" title="function not covered" >    function updateMinDelay(uint256 _newMin) external onlyCore {</span>
+<span class="cstat-no" title="statement not covered" >        require(_newMin &gt; 15, "Prop: min cannot be 0")</span>;
+<span class="cstat-no" title="statement not covered" >        minDelay_ = _newMin</span>;
+    }
+&nbsp;
+    /**
+     * @param   _startDelay The delay before voting can start on a proposal.
+     * @param   _endDelay The delay after voting starts for voting to close.
+     * @notice  This minimum delay counts for both voting starting after a
+     *          proposal is proposed, as well as how long the delay is after it
+     *          has started till voting closes. Only the core can modify.
+     * @dev     These mins are time stamps. The min delay cannot be smaller than
+     *          15 (safe minimum).
+     */
+<span class="fstat-no" title="function not covered" >    function updateDelays(uint256 _startDelay, uint256 _endDelay)</span>
+        external
+        onlyCore
+    {
+<span class="cstat-no" title="statement not covered" >        require(</span>
+            _startDelay &gt;= minDelay_ &amp;&amp; _endDelay &gt;= minDelay_,
+            "Prop: delays cannot be 0"
+        );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        voteStartDelay_ = _startDelay</span>;
+<span class="cstat-no" title="statement not covered" >        voteEndDelay_ = _endDelay</span>;
+    }
+&nbsp;
+    //--------------------------------------------------------------------------
+    // ONLY COORDINATOR
+    //
+    // Below functions can only be called by the coordinator.
+&nbsp;
+    function propVoting(uint256 _propID) external override onlyCoord {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            props_[_propID].state == PropStatus.CREATED,
+            "Prop: Invalid state movement"
+        );
+&nbsp;
+        props_[_propID].state = PropStatus.VOTING;
+    }
+&nbsp;
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Expired. Only the coordinator
+     *          can call this function.
+     *          A proposal expires if it does not reach the minimum consensus
+     *          specifications before the vote window expires.
+     */
+    function propExpire(uint256 _propID) external override onlyCoord {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            props_[_propID].state == PropStatus.VOTING,
+            "Prop: Invalid state movement"
+        );
+&nbsp;
+        props_[_propID].state = PropStatus.EXPIRED;
+        props_[_propID].spent = true;
+    }
+&nbsp;
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Defeated. Only the coordinator
+     *          can call this function.
+     *          A proposal is defeated if it reaches the minimum consensus
+     *          specifications but is voted against.
+     */
+    function propDefeated(uint256 _propID) external override onlyCoord {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            props_[_propID].state == PropStatus.VOTING,
+            "Prop: Invalid state movement"
+        );
+&nbsp;
+        props_[_propID].state = PropStatus.DEFEATED;
+        props_[_propID].spent = true;
+    }
+&nbsp;
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Queued. Only the coordinator
+     *          can call this function.
+     *          A proposal is queued if it reaches the minimum consensus
+     *          specifications and is voted for. Once queued a proposal can be
+     *          executed. If a proposal does not have an executable, it can
+     *          still be "executed" to update the state in accordance.
+     */
+    function propQueued(uint256 _propID) external override onlyCoord {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            props_[_propID].state == PropStatus.VOTING,
+            "Prop: Invalid state movement"
+        );
+&nbsp;
+        props_[_propID].state = PropStatus.QUEUED;
+    }
+&nbsp;
+    /**
+     * @param   _propID ID of the prop.
+     * @notice  Updates the proposals state to Executed. Only the coordinator
+     *          can call this function.
+     *          A proposal is executed if it reaches the minimum consensus
+     *          specifications, is voted for and then executed. If a proposal
+     *          has a related executable this executable will be run in the
+     *          context of the core. If there is no associated executable, the
+     *          status of the proposal will be updated regardless.
+     */
+    function propExecuted(uint256 _propID) external override onlyCoord {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            props_[_propID].state == PropStatus.QUEUED,
+            "Prop: Invalid state movement"
+        );
+&nbsp;
+        props_[_propID].state = PropStatus.EXECUTED;
+        props_[_propID].spent = true;
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 08 2021 19:10:07 GMT+0200 (South Africa Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

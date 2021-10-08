@@ -657,7 +657,7 @@ describe("Basic DAO testing", () => {
             );
         });
 
-        it("Can expire proposal not reaching quorum", async () => {
+        it("Can expire proposal", async () => {
             let voteFor = await simpleMajority.encodeBallot(true);
 
             await votingBooth.connect(voter_one).vote(propID, voteFor);
@@ -668,9 +668,6 @@ describe("Basic DAO testing", () => {
             await coordinator.connect(proposer).queueProposal(propID)
             
             status = await proposals.getPropVotables(propID);
-
-            console.log(statusBefore)
-            console.log(status)
 
             expect(
                 statusBefore.state
@@ -696,7 +693,295 @@ describe("Basic DAO testing", () => {
     });
 
     describe("Executing testing", async () => {
-        
+        beforeEach(async () => {
+            let exe = await (await executable.createExe(
+                [testExecutable.address, testExecutable.address],
+                testSettings.executable.funcSig,
+                testSettings.executable.bytes,
+                testSettings.executable.values,
+                testSettings.executable.description
+            )).wait();
+            exeID = exe.events[0].args.exeID;
+
+            let proposal = await (await proposals.connect(proposer).createPropWithExe(
+                "Proposal to distribute reputation rewards to proposer.",
+                testSettings.voteType.id,
+                exeID
+            )).wait();
+
+            propID = proposal.events[1].args.propID.toString();
+            propExeID = proposal.events[1].args.exeID.toString();
+
+            status = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(status.voteStart); 
+        });
+
+        it("Can execute proposal", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID);
+            let statusDuring = await proposals.getPropVotables(propID);
+
+            await core.execute(propExeID);
+            status = await proposals.getPropVotables(propID);
+
+            expect(
+                statusBefore.state
+            ).to.equal(
+                2
+            );
+            expect(
+                statusBefore.spent
+            ).to.equal(
+                false
+            );
+            expect(
+                statusDuring.state
+            ).to.equal(
+                3
+            );
+            expect(
+                statusDuring.spent
+            ).to.equal(
+                false
+            );
+            expect(
+                status.state
+            ).to.equal(
+                4
+            );
+            expect(
+                status.spent
+            ).to.equal(
+                true
+            );
+        });
+
+        it("Can't execute proposal before queueing", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+
+            await expect(
+                core.execute(propExeID)
+            ).to.be.revertedWith('Coord: exe not executable');
+        });
+
+        it("Can't execute proposal that does not reach quorum", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID);
+
+            await expect(
+                core.execute(propExeID)
+            ).to.be.revertedWith('Coord: exe not executable');
+        });
+
+        it("Can't execute proposal that is defeated", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteAgainst);
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            await votingBooth.connect(proposer).vote(propID, voteAgainst);
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID);
+
+            await expect(
+                core.execute(propExeID)
+            ).to.be.revertedWith('Coord: exe not executable');
+        });
+
+        it("Can't execute proposal that has expired", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID);
+
+            await expect(
+                core.execute(propExeID)
+            ).to.be.revertedWith('Coord: exe not executable');
+        });
+    });
+
+    describe("Elevated permission functions testing", async () => {
+        it("Core onlyCore", async () => {
+            let bytesKey = await testExecutable.encodeBytes32("TEST_EXECUTABLE");
+            let bytes1 = await testExecutable.encodeKeyAddress(
+                bytesKey.toString(),
+                testExecutable.address
+            );
+            let bytes2 = await testExecutable.encodeKeyAddress(
+                bytesKey.toString(),
+                voter_four.address
+            );
+
+            let exe = await (await executable.createExe(
+                [
+                    core.address,
+                    core.address,
+                    core.address
+                ],
+                [
+                    "addContract(bytes32,address)",
+                    "updateContract(bytes32,address)",
+                    "deleteContract(bytes32)"
+                ],
+                [
+                    bytes1.toString(), // key address
+                    bytes2.toString(), // key new address
+                    bytesKey.toString() // key
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ],
+                "Adding, updating then deleting a contract"
+            )).wait();
+            exeID = exe.events[0].args.exeID;
+
+            let proposal = await (await proposals.connect(proposer).createPropWithExe(
+                "Proposal to distribute reputation rewards to proposer.",
+                testSettings.voteType.id,
+                exeID
+            )).wait();
+
+            propID = proposal.events[1].args.propID.toString();
+            propExeID = proposal.events[1].args.exeID.toString();
+
+            status = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(status.voteStart); 
+
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            await votingBooth.connect(voter_two).vote(propID, voteFor);
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+
+            let statusBefore = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(statusBefore.voteEnd);
+            
+            await coordinator.connect(proposer).queueProposal(propID);
+
+            await core.execute(propExeID);
+        });
+
+        it("Core onlyCore negatives", async () => {
+            let bytesKey = await testExecutable.encodeBytes32("TEST_EXECUTABLE");
+
+            await expect(
+                core.connect(proposer).addContract(bytesKey, testExecutable.address)
+            ).to.be.revertedWith('Core: Only exes can modify');
+            await expect(
+                core.connect(proposer).updateContract(bytesKey, testExecutable.address)
+            ).to.be.revertedWith('Core: Only exes can modify');
+            await expect(
+                core.connect(proposer).deleteContract(bytesKey)
+            ).to.be.revertedWith('Core: Only exes can modify');
+        });
+
+        it("Coordinator onlyCore & onlySystem negatives", async () => {
+            let bytesKey = await testExecutable.encodeBytes32("TEST_EXECUTABLE");
+
+            await expect(
+                coordinator.connect(proposer).setExecute(exeID)
+            ).to.be.revertedWith('System: Only core can modify');
+            await expect(
+                testExecutable.connect(proposer).addSub(
+                    coordinator.address, 
+                    bytesKey, 
+                    testExecutable.address
+                )
+            ).to.be.revertedWith('Coord: Incorrect ID for sub');
+        });
+
+        it("Executable onlyProps negatives", async () => {
+            await expect(
+                executable.connect(proposer).createPropExe(propID, exeID, "test")
+            ).to.be.revertedWith('Exe: Only prop can call');
+        });
+
+        it("Proposals onlyCore & OnlyCoord negatives", async () => {
+            await expect(
+                proposals.connect(proposer).updateMinDelay(123)
+            ).to.be.revertedWith('System: Only core can modify');
+            await expect(
+                proposals.connect(proposer).updateDelays(123, 123)
+            ).to.be.revertedWith('System: Only core can modify');
+            await expect(
+                proposals.connect(proposer).propVoting(propID)
+            ).to.be.revertedWith('Prop: Only coord can call');
+            await expect(
+                proposals.connect(proposer).propExpire(propID)
+            ).to.be.revertedWith('Prop: Only coord can call');
+            await expect(
+                proposals.connect(proposer).propDefeated(propID)
+            ).to.be.revertedWith('Prop: Only coord can call');
+            await expect(
+                proposals.connect(proposer).propQueued(propID)
+            ).to.be.revertedWith('Prop: Only coord can call');
+            await expect(
+                proposals.connect(proposer).propExecuted(propID)
+            ).to.be.revertedWith('Prop: Only coord can call');
+        });
+
+        it("Voting booth onlyCore negatives", async () => {
+            let bytesKey = await testExecutable.encodeBytes32("TEST_EXECUTABLE");
+
+            await expect(
+                votingBooth.connect(proposer).addVoteType(
+                    bytesKey.toString(),
+                    proposer.address,
+                    "bool,uint256,uint256"
+                )
+            ).to.be.revertedWith('System: Only core can modify');
+        });
+
+        it("Initialiser tests", async () => {
+            await expect(
+                core.connect(proposer).initialise(
+                    proposer.address,
+                    proposer.address,
+                    proposer.address,
+                    proposer.address,
+                    proposer.address
+                )
+            ).to.be.revertedWith('Init: Contract is initialized');
+            // QS
+        });
     });
 
     // it("Can execute executable", async () => {

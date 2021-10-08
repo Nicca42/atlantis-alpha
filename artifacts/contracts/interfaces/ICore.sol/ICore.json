@@ -20,6 +20,24 @@
       "inputs": [
         {
           "internalType": "bytes32",
+          "name": "_subIdentifier",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "_subImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "addSubSystem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
           "name": "_key",
           "type": "bytes32"
         }
