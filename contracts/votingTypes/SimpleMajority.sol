@@ -88,15 +88,16 @@ contract SimpleMajority is BaseSystem, IVoteType {
         uint256 allVotedWeight = voteCount_[_propID].weightFor +
             voteCount_[_propID].weightAgainst;
 
-        if (totalWeight / 2 > allVotedWeight) {
-            // Not enough weight has voted for simple majority
-            return (false, false);
-        } else if (
+        if ((totalWeight/2) <= allVotedWeight) {
+            // Enough weight has voted to reach quorum
+            reached = true;
+        }
+        if (
             voteCount_[_propID].weightFor > voteCount_[_propID].weightAgainst
         ) {
-            return (true, true);
+            // Majority of weight is in favour of proposal passing
+            votePassed = true;
         }
-        return (true, false);
     }
 
     //--------------------------------------------------------------------------

@@ -55,19 +55,20 @@ contract VoteWeight is BaseSystem, IWeight {
         // NOTE does it not make more sense to do the snapshot here??
         // Nope. Need to snapshot at proposal for flash loans :/
 
-        uint256 voteWeight = govToken_.balanceOf(_voter) *
+        uint256 voteWeight = govToken_.balanceOf(_voter) +
             repToken_.balanceOf(_voter);
 
         // return(voteWeight == 0 ? 0 : voteWeight / 2);
         if (voteWeight == 0) {
             return 0;
         } else {
-            return voteWeight / 2;
+            return voteWeight;
         }
     }
 
     function getTotalWeight(uint256 _propID) external view override returns (uint256) {
         // TODO this should use the snapshot. Super insecure to do it like this
-        return (govToken_.totalSupply() + repToken_.totalSupply() / 2);
+        uint256 total = govToken_.totalSupply() + repToken_.totalSupply();
+        return total;
     }
 }

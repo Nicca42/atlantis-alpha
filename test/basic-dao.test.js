@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Basic DAO testing", () => {
-    var deployer, proposer, voter_one, voter_two, voter_three;
+    var deployer, proposer, voter_one, voter_two, voter_three, voter_four;
     var core, coordinator, executable, proposals, voteWeight, votingBooth, 
         simpleMajority, testExecutable, govToken, repToken, timer;
     let exeID, propID, propExeID, status;
@@ -13,7 +13,8 @@ describe("Basic DAO testing", () => {
             proposer,
             voter_one,
             voter_two,
-            voter_three
+            voter_three,
+            voter_four
         ] = await ethers.getSigners();
 
         const Core = await ethers.getContractFactory("Core");
@@ -239,7 +240,7 @@ describe("Basic DAO testing", () => {
             expect(
                 currentVote.weightFor.toString()
             ).to.equal(
-                '5000'
+                '1010'
             );
             expect(
                 currentVote.weightAgainst.toString()
@@ -253,7 +254,7 @@ describe("Basic DAO testing", () => {
             );
         });
 
-        it("Can vote for proposal", async () => {
+        it("Can vote against proposal", async () => {
             let voteAgainst = await simpleMajority.encodeBallot(false);
 
             await votingBooth.connect(proposer).vote(propID, voteAgainst);
@@ -269,7 +270,7 @@ describe("Basic DAO testing", () => {
             expect(
                 currentVote.weightAgainst.toString()
             ).to.equal(
-                '5000'
+                '1010'
             );
             expect(
                 currentVote.weightFor.toString()
@@ -319,18 +320,247 @@ describe("Basic DAO testing", () => {
     });
 
     describe("Quorum testing", async () => {
-        it("Multiple votes counted correctly", async () => {
-    
+        beforeEach(async () => {
+            let exe = await (await executable.createExe(
+                [testExecutable.address, testExecutable.address],
+                testSettings.executable.funcSig,
+                testSettings.executable.bytes,
+                testSettings.executable.values,
+                testSettings.executable.description
+            )).wait();
+            exeID = exe.events[0].args.exeID;
+
+            let proposal = await (await proposals.connect(proposer).createPropWithExe(
+                "Proposal to distribute reputation rewards to proposer.",
+                testSettings.voteType.id,
+                exeID
+            )).wait();
+
+            propID = proposal.events[1].args.propID.toString();
+            propExeID = proposal.events[1].args.exeID.toString();
+
+            status = await proposals.getPropVotables(propID);
+            await timer.setCurrentTime(status.voteStart); 
+        });
+
+        it("Proposal passes correctly", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            let consensus = await simpleMajority.consensusReached(propID);
+            
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            let consensus1 = await simpleMajority.consensusReached(propID);
+            
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+            let consensus2 = await simpleMajority.consensusReached(propID);
+
+            await votingBooth.connect(voter_three).vote(propID, voteFor);
+            let consensus3 = await simpleMajority.consensusReached(propID);            
+            let currentVote = await simpleMajority.getCurrentVote(propID);
+
+            expect(
+                currentVote.weightFor.toString()
+            ).to.equal(
+                '2121'
+            );
+            expect(
+                currentVote.weightAgainst.toString()
+            ).to.equal(
+                '110'
+            );
+            expect(
+                currentVote.voterTurnout.toString()
+            ).to.equal(
+                '4'
+            );
+            expect(
+                consensus.reached
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus1.reached
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus2.reached
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus3.reached
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus.votePassed
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus1.votePassed
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus2.votePassed
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus3.votePassed
+            ).to.equal(
+                true
+            );
+        });
+
+        it("Proposal fails correctly", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(voter_one).vote(propID, voteFor);
+            let consensus = await simpleMajority.consensusReached(propID);
+            
+            await votingBooth.connect(voter_two).vote(propID, voteAgainst);
+            let consensus1 = await simpleMajority.consensusReached(propID);
+            
+            await votingBooth.connect(proposer).vote(propID, voteAgainst);
+            let consensus2 = await simpleMajority.consensusReached(propID);
+
+            await votingBooth.connect(voter_three).vote(propID, voteAgainst);
+            let consensus3 = await simpleMajority.consensusReached(propID);            
+            let currentVote = await simpleMajority.getCurrentVote(propID);
+
+            expect(
+                currentVote.weightAgainst.toString()
+            ).to.equal(
+                '2121'
+            );
+            expect(
+                currentVote.weightFor.toString()
+            ).to.equal(
+                '110'
+            );
+            expect(
+                currentVote.voterTurnout.toString()
+            ).to.equal(
+                '4'
+            );
+            expect(
+                consensus.reached
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus1.reached
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus2.reached
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus3.reached
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus.votePassed
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus1.votePassed
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus2.votePassed
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus3.votePassed
+            ).to.equal(
+                false
+            );
+        });
+
+        it("Proposal ties correctly", async () => {
+            await govToken.mint(voter_four.address, 10);
+            await repToken.mint(voter_four.address, 1000);
+
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(proposer).vote(propID, voteFor);
+            let consensus = await simpleMajority.consensusReached(propID);
+
+            await votingBooth.connect(voter_four).vote(propID, voteAgainst);
+            let consensus1 = await simpleMajority.consensusReached(propID);            
+            let currentVote = await simpleMajority.getCurrentVote(propID);
+
+            console.log(currentVote.weightAgainst.toString())
+            console.log(currentVote.weightFor.toString())
+            console.log(currentVote.voterTurnout.toString())
+
+            // expect(
+            //     currentVote.weightAgainst.toString()
+            // ).to.equal(
+            //     '2121'
+            // );
+            // expect(
+            //     currentVote.weightFor.toString()
+            // ).to.equal(
+            //     '110'
+            // );
+            expect(
+                currentVote.voterTurnout.toString()
+            ).to.equal(
+                '2'
+            );
+            expect(
+                consensus.reached
+            ).to.equal(
+                false
+            );
+            expect(
+                consensus1.reached
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus.votePassed
+            ).to.equal(
+                true
+            );
+            expect(
+                consensus1.votePassed
+            ).to.equal(
+                false
+            );
         });
     });
 
-    it("Can execute executable", async () => {
-
+    describe("Coordinating testing", async () => {
+        // TODO test for state moving correctly on exe
+            // expire
+            // defeat 
+            // queued
     });
 
-    it("Can create prop executable", async () => {
+    // it("Can execute executable", async () => {
 
-    });
+    // });
+
+    // it("Can create prop executable", async () => {
+
+    // });
 
     let testSettings = {
         tokens: {
