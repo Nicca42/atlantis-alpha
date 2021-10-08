@@ -73,13 +73,10 @@ contract VotingBooth is BaseSystem, IBooth {
 
         require(
             this.getVoteType(address(voteType)) != bytes32(0),
-            "Booth: Invalid vote type"
+            "Booth: Invalid vote type/prop"
         );
 
-        require(
-            cordInstance.voting(_propID),
-            "Booth: Proposal is not votable"
-        );
+        cordInstance.voting(_propID);
 
         emit VoteCast(msg.sender, _propID, _vote);
 

@@ -12,7 +12,7 @@ interface ICoord {
     function addSubSystem(bytes32 _subIdentifier, address _subImplementation)
         external;
 
-    function voting(uint256 _propID) external returns(bool);
+    function voting(uint256 _propID) external;
 
     /**
      * @param   _exeID ID of the executable to check.

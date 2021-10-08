@@ -133,7 +133,7 @@ contract SimpleMajority is BaseSystem, IVoteType {
                 voteCount_[_propID].weightAgainst += voteWeight;
             }
         } catch {
-            require(false, "Vote incorrectly formatted");
+            require(false, "Con: Vote incorrectly formatted");
         }
 
         return true;

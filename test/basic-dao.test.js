@@ -223,23 +223,76 @@ describe("Basic DAO testing", () => {
             await timer.setCurrentTime(status.voteStart); 
         });
 
-        it("Can vote on proposal", async () => {
+        it("Can vote for proposal", async () => {
             let voteFor = await simpleMajority.encodeBallot(true);
-            let voteAgainst = await simpleMajority.encodeBallot(false);
 
             await votingBooth.connect(proposer).vote(propID, voteFor);
 
             let currentVote = await simpleMajority.getCurrentVote(propID);
             let voterStatus = await simpleMajority.hasVoted(propID, proposer.address);
 
-            console.log(currentVote)
-            // QS
+            expect(
+                voterStatus
+            ).to.equal(
+                true
+            );
+            expect(
+                currentVote.weightFor.toString()
+            ).to.equal(
+                '5000'
+            );
+            expect(
+                currentVote.weightAgainst.toString()
+            ).to.equal(
+                '0'
+            );
+            expect(
+                currentVote.voterTurnout.toString()
+            ).to.equal(
+                '1'
+            );
+        });
+
+        it("Can vote for proposal", async () => {
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await votingBooth.connect(proposer).vote(propID, voteAgainst);
+
+            let currentVote = await simpleMajority.getCurrentVote(propID);
+            let voterStatus = await simpleMajority.hasVoted(propID, proposer.address);
 
             expect(
                 voterStatus
             ).to.equal(
                 true
             );
+            expect(
+                currentVote.weightAgainst.toString()
+            ).to.equal(
+                '5000'
+            );
+            expect(
+                currentVote.weightFor.toString()
+            ).to.equal(
+                '0'
+            );
+            expect(
+                currentVote.voterTurnout.toString()
+            ).to.equal(
+                '1'
+            );
+        });
+
+        it("Can't vote on bad proposal", async () => {
+            let voteFor = await simpleMajority.encodeBallot(true);
+            let voteAgainst = await simpleMajority.encodeBallot(false);
+
+            await expect(
+                votingBooth.connect(proposer).vote('0', voteAgainst)
+            ).to.be.revertedWith('Booth: Invalid vote type/prop');
+            await expect(
+                votingBooth.connect(proposer).vote(propID, '0x01')
+            ).to.be.revertedWith('Con: Vote incorrectly formatted');
         });
 
         it("Can't vote before start", async () => {
@@ -262,6 +315,12 @@ describe("Basic DAO testing", () => {
             await expect(
                 votingBooth.connect(proposer).vote(propID, voteFor)
             ).to.be.revertedWith('Coord: prop not votable');
+        });
+    });
+
+    describe("Quorum testing", async () => {
+        it("Multiple votes counted correctly", async () => {
+    
         });
     });
 

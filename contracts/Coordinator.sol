@@ -49,7 +49,7 @@ contract Coordinator is BaseSystem, ICoord {
 
         (
             IProp.PropStatus state,
-            uint256 voteStart,
+            ,
             uint256 voteEnd,
             bool executedOrCanceled
         ) = propInstance.getPropVotables(propID);
@@ -124,7 +124,7 @@ contract Coordinator is BaseSystem, ICoord {
         // Don't need to return false, will return false if not returning true.
     }
 
-    function voting(uint256 _propID) external override returns(bool) {
+    function voting(uint256 _propID) external override {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
         IBooth boothInstance = IBooth(core_.getInstance(CoreLib.VOTE_BOOTH));
 
@@ -156,8 +156,6 @@ contract Coordinator is BaseSystem, ICoord {
         if(state == IProp.PropStatus.CREATED) {
             propInstance.propVoting(_propID);
         }
-
-        return true;
     }
 
     function getSubSystem(address _system, bytes32 _subIdentifier)
@@ -194,10 +192,7 @@ contract Coordinator is BaseSystem, ICoord {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
 
         (
-            IProp.PropStatus state,
-            uint256 voteStart,
-            uint256 voteEnd,
-            bool executedOrCanceled
+            , , uint256 voteEnd, bool executedOrCanceled
         ) = propInstance.getPropVotables(_propID);
 
         require(
