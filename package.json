@@ -11,10 +11,12 @@
     "test": "hardhat test",
     "cover": "hardhat coverage",
     "clean": "rm -rf artifacts && rm -rf cache",
-    "deploy:local": "hardhat run scripts/sample-script.js --network localhost"
+    "deploy:local": "hardhat run scripts/sample-script.js --network localhost",
+    "remix": "remixd -s /Users/veronicac/Desktop/projects/freelance/atlantis-alpha --remix-ide https://remix.ethereum.org"
   },
   "dependencies": {
     "@openzeppelin/contracts": "4.3.2",
+    "@remix-project/remixd": "0.5.2",
     "dotenv": "10.0.0",
     "ethers": "5.4.7",
     "hardhat": "2.6.4"

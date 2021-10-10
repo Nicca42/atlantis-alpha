@@ -20,17 +20,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -72,17 +67,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -113,17 +103,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -154,17 +139,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -195,17 +175,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -236,17 +211,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -277,17 +247,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -318,17 +283,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -359,17 +319,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -400,17 +355,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -441,17 +391,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -466,8 +411,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/test/Timer.sol": {
-      "lastModificationDate": 1633611294675,
-      "contentHash": "cb699e7aeb332bbf15b8223ab53f2f7a",
+      "lastModificationDate": 1633880500534,
+      "contentHash": "9514b4e3db523956e86d349562429882",
       "sourceName": "contracts/test/Timer.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -484,17 +429,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -525,17 +465,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -551,7 +486,7 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/VotingBooth.sol": {
-      "lastModificationDate": 1633686370407,
+      "lastModificationDate": 1633887760693,
       "contentHash": "122b7da71faec13c780fb16d5118cd25",
       "sourceName": "contracts/VotingBooth.sol",
       "solcConfig": {
@@ -569,17 +504,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -612,17 +542,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -656,17 +581,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -679,7 +599,7 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Proposals.sol": {
-      "lastModificationDate": 1633622857489,
+      "lastModificationDate": 1633886997055,
       "contentHash": "921c97046e9e2b3af8967cf70786a0b0",
       "sourceName": "contracts/Proposals.sol",
       "solcConfig": {
@@ -697,17 +617,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -722,7 +637,7 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Executables.sol": {
-      "lastModificationDate": 1633622261142,
+      "lastModificationDate": 1633886995691,
       "contentHash": "7a8a752229a6dc8d2f37c621637940ae",
       "sourceName": "contracts/Executables.sol",
       "solcConfig": {
@@ -740,17 +655,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -765,8 +675,8 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Coordinator.sol": {
-      "lastModificationDate": 1633702043901,
-      "contentHash": "7f9b82bd4291743aaa9292a0e70c3060",
+      "lastModificationDate": 1633901781875,
+      "contentHash": "b897a1c4494d43b7aa1e41fab6eb6513",
       "sourceName": "contracts/Coordinator.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -783,17 +693,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -808,7 +713,7 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/test/TestExecutable.sol": {
-      "lastModificationDate": 1633713550182,
+      "lastModificationDate": 1633887444209,
       "contentHash": "ee5b7ddfea4190aa949413fab06aef87",
       "sourceName": "contracts/test/TestExecutable.sol",
       "solcConfig": {
@@ -826,17 +731,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -852,7 +752,7 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Core.sol": {
-      "lastModificationDate": 1633711166304,
+      "lastModificationDate": 1633887815340,
       "contentHash": "47a6eea9c47ff061ace3861db11abbd2",
       "sourceName": "contracts/Core.sol",
       "solcConfig": {
@@ -870,17 +770,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -898,7 +793,7 @@
       ]
     },
     "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/openZeppelin/Token.sol": {
-      "lastModificationDate": 1633361644226,
+      "lastModificationDate": 1633880147726,
       "contentHash": "fd863460d8574e5930b19218be52f372",
       "sourceName": "contracts/openZeppelin/Token.sol",
       "solcConfig": {
@@ -916,17 +811,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -959,17 +849,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1004,17 +889,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1045,17 +925,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1088,17 +963,12 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
-                "userdoc",
-                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },

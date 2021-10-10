@@ -18,7 +18,9 @@ contract Timer {
      */
     function setCurrentTime(uint256 time) external {
         currentTime = time;
-    }
+    } 
+
+    // TODO make moveTimeForward 
 
     /**
      * @notice Gets the currentTime variable set in the Timer.

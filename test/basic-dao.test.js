@@ -984,14 +984,6 @@ describe("Basic DAO testing", () => {
         });
     });
 
-    // it("Can execute executable", async () => {
-
-    // });
-
-    // it("Can create prop executable", async () => {
-
-    // });
-
     let testSettings = {
         tokens: {
             rep: {

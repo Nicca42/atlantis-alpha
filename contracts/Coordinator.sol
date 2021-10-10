@@ -64,38 +64,7 @@ contract Coordinator is BaseSystem, ICoord {
         ) {
             return true;
         }
-        // Don't need to return false, will return false if not returning true.
-    }
-
-    function setExecute(bytes32 _exeID) external override onlyCore {
-        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
-
-        uint256 propID = propInstance.getPropOfExe(_exeID);
-
-        // If prop does not exist for this exe then it is not executable
-        require(propID != uint256(0), "Coord: No linked prop");
-        // FUTURE in later versions one might want to have a list of
-        //        pre-approved exes that can be executed on a recurring
-        //        basis (i.e monthly payments)/
-
-        (
-            IProp.PropStatus state,
-            ,
-            uint256 voteEnd,
-            bool spent
-        ) = propInstance.getPropVotables(propID);
-
-        require(
-            // State is queued
-            state == IProp.PropStatus.QUEUED &&
-            // AND vote end has passed
-            voteEnd <= getCurrentTime() &&
-            // AND prop has not been executed or canceled
-            !spent,
-            "Coord: exe not executable"
-        );
-
-        propInstance.propExecuted(propID);
+        return false;
     }
 
     function isVotable(uint256 _propID) external view override returns (bool) {
@@ -121,8 +90,21 @@ contract Coordinator is BaseSystem, ICoord {
         ) {
             return true;
         }
-        // Don't need to return false, will return false if not returning true.
+        return false;
     }
+
+    function getSubSystem(address _system, bytes32 _subIdentifier)
+        external
+        view
+        override
+        returns (address)
+    {
+        return subSystems_[_system][_subIdentifier];
+    }
+
+    //--------------------------------------------------------------------------
+    // PUBLIC & EXTERNAL FUNCTIONS
+    //--------------------------------------------------------------------------
 
     function voting(uint256 _propID) external override {
         IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
@@ -158,19 +140,6 @@ contract Coordinator is BaseSystem, ICoord {
         }
     }
 
-    function getSubSystem(address _system, bytes32 _subIdentifier)
-        external
-        view
-        override
-        returns (address)
-    {
-        return subSystems_[_system][_subIdentifier];
-    }
-
-    //--------------------------------------------------------------------------
-    // PUBLIC & EXTERNAL FUNCTIONS
-    //--------------------------------------------------------------------------
-
     function addSubSystem(bytes32 _subIdentifier, address _subImplementation)
         external
         override
@@ -182,10 +151,6 @@ contract Coordinator is BaseSystem, ICoord {
 
         subSystems_[msg.sender][_subIdentifier] = _subImplementation;
     }
-
-    // function execute
-    // TODO the core calls when it is going to execute. Will check execution
-    // is valid, as well as updating the state to be executed.
 
     function queueProposal(uint256 _propID) external {
         IBooth boothInstance = IBooth(core_.getInstance(CoreLib.VOTE_BOOTH));
@@ -214,5 +179,36 @@ contract Coordinator is BaseSystem, ICoord {
             // Proposal succeeded and can be queued
             propInstance.propQueued(_propID);
         }
+    }
+
+    function setExecute(bytes32 _exeID) external override onlyCore {
+        IProp propInstance = IProp(core_.getInstance(CoreLib.PROPS));
+
+        uint256 propID = propInstance.getPropOfExe(_exeID);
+
+        // If prop does not exist for this exe then it is not executable
+        require(propID != uint256(0), "Coord: No linked prop");
+        // FUTURE in later versions one might want to have a list of
+        //        pre-approved exes that can be executed on a recurring
+        //        basis (i.e monthly payments)/
+
+        (
+            IProp.PropStatus state,
+            ,
+            uint256 voteEnd,
+            bool spent
+        ) = propInstance.getPropVotables(propID);
+
+        require(
+            // State is queued
+            state == IProp.PropStatus.QUEUED &&
+            // AND vote end has passed
+            voteEnd <= getCurrentTime() &&
+            // AND prop has not been executed or canceled
+            !spent,
+            "Coord: exe not executable"
+        );
+
+        propInstance.propExecuted(propID);
     }
 }

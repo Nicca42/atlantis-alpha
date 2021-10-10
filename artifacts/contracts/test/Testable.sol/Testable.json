@@ -4,19 +4,6 @@
   "sourceName": "contracts/test/Testable.sol",
   "abi": [
     {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "c__0x0da7e8db",
-          "type": "bytes32"
-        }
-      ],
-      "name": "c_0x0da7e8db",
-      "outputs": [],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "getCurrentTime",
       "outputs": [
