@@ -226,14 +226,11 @@ describe("Start here: Intro to the Atlantis framework", () => {
         console.log("\n6️⃣  Execute the proposal...\n");
 
         let tttt = await proposals.getPropOfExe(propExeID);
-        console.log(tttt.toString())
         let status = await proposals.getPropVotables(propID);
-        console.log(status)
 
         await core.execute(propExeID);
 
         status = await proposals.getPropVotables(propID);
-        console.log(status)
     });
 
     let testExe = {

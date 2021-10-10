@@ -20,12 +20,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -67,12 +72,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -103,12 +113,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -139,12 +154,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -175,12 +195,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -211,12 +236,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -247,12 +277,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -283,12 +318,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -319,12 +359,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -355,12 +400,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -391,12 +441,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -429,12 +484,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -465,12 +525,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -504,12 +569,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -542,12 +612,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -581,12 +656,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -617,12 +697,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -655,12 +740,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -693,12 +783,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -731,12 +826,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -770,12 +870,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -811,12 +916,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -849,12 +959,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -889,12 +1004,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -925,12 +1045,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -963,12 +1088,17 @@
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
                 "devdoc",
+                "userdoc",
+                "devdoc",
                 "userdoc"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -978,6 +1108,55 @@
       ],
       "artifacts": [
         "Context"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/Factory.sol": {
+      "lastModificationDate": 1633902398053,
+      "contentHash": "6dc8ffa960833d69a4e029b4162248a8",
+      "sourceName": "contracts/Factory.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": false
+          }
+        }
+      },
+      "imports": [
+        "./Core.sol",
+        "./Coordinator.sol",
+        "./Executables.sol",
+        "./Proposals.sol",
+        "./VotingBooth.sol",
+        "./VoteWeight.sol",
+        "./votingTypes/SimpleMajority.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Factory"
       ]
     }
   }

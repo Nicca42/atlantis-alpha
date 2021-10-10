@@ -2,7 +2,21 @@
   "_format": "hh-sol-artifact-1",
   "contractName": "Initializable",
   "sourceName": "contracts/openZeppelin/Initializable.sol",
-  "abi": [],
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "c__0x00e2a1ba",
+          "type": "bytes32"
+        }
+      ],
+      "name": "c_0x00e2a1ba",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "linkReferences": {},

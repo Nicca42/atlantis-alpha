@@ -980,7 +980,29 @@ describe("Basic DAO testing", () => {
                     proposer.address
                 )
             ).to.be.revertedWith('Init: Contract is initialized');
-            // QS
+            
+            await expect(
+                votingBooth.initialise(
+                    simpleMajority.address,
+                    testSettings.voteType.id,
+                    testSettings.voteType.voteFormat
+                )
+            ).to.be.revertedWith('Init: Contract is initialized');
+
+            await expect(
+                voteWeight.initialise(
+                    govToken.address,
+                    repToken.address
+                )
+            ).to.be.revertedWith('Init: Contract is initialized');
+
+            await expect(
+                proposals.initialise(
+                    testSettings.proposals.minDelay,
+                    testSettings.proposals.startDelay,
+                    testSettings.proposals.endDelay
+                )
+            ).to.be.revertedWith('Init: Contract is initialized');
         });
     });
 

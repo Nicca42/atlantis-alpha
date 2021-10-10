@@ -17,6 +17,32 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "c__0x00e2a1ba",
+          "type": "bytes32"
+        }
+      ],
+      "name": "c_0x00e2a1ba",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "c__0x35ade16d",
+          "type": "bytes32"
+        }
+      ],
+      "name": "c_0x35ade16d",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "core_",
       "outputs": [
