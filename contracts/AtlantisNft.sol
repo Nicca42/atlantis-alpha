@@ -76,6 +76,7 @@ contract AtlantisNft {
     }
 
     function approve(uint256 _tokenId, address _spender, bool _isApproved) external {
+        // Don't need to check is sender is owner as the mapping is against sender
         tokens_[_tokenId].approvedSpenders[msg.sender][_spender] = _isApproved;
     }
 
@@ -212,10 +213,6 @@ contract AtlantisNft {
         address _to,
         address _from
     ) internal {
-        require(
-            tokens_[_tokenId].owner == _from, "Token: From not owner"
-        );
-
         balances_[_from][bytes32(0)] -= 1;
         balances_[_from][_typeId] -= 1;
         tokens_[_tokenId].owner = _to;

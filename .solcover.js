@@ -6,6 +6,7 @@ module.exports = {
         'test/Testable.sol',
         'test/Timer.sol',
         'test/TestExecutable.sol',
+        'test/Token721.sol',
         'interfaces/IBooth.sol',
         'interfaces/ICoord.sol',
         'interfaces/ICore.sol',
