@@ -1023,6 +1023,74 @@
       "artifacts": [
         "Factory"
       ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/AtlantisNft.sol": {
+      "lastModificationDate": 1634299072613,
+      "contentHash": "91fc5de9cbcec26ce41013b88d40dc65",
+      "sourceName": "contracts/AtlantisNft.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "AtlantisNft"
+      ]
+    },
+    "/Users/veronicac/Desktop/projects/freelance/atlantis-alpha/contracts/BaseNft.sol": {
+      "lastModificationDate": 1634293437068,
+      "contentHash": "30b4b837081a0424ae3858e9e7103914",
+      "sourceName": "contracts/BaseNft.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
     }
   }
 }
