@@ -3,6 +3,7 @@ pragma solidity 0.8.7;
 
 library CoreLib {
     bytes32 constant public CORE = keccak256("CORE");
+    bytes32 constant public TOKEN = keccak256("ATLANTIS_NFT");
     bytes32 constant public COORD = keccak256("COORDINATOR");
     bytes32 constant public EXE = keccak256("EXECUTABLES");
     bytes32 constant public PROPS = keccak256("PROPOSALS");
