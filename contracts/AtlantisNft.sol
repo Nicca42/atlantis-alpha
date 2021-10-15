@@ -62,4 +62,32 @@ contract AtlantisNft {
             }
         }
     }
+
+    function updateMinters(
+        bytes32 _tokenId,
+        address[] calldata _minters, 
+        bool[] calldata _isMinter
+    ) external {
+        require(
+            tokenTypes_[_tokenId].typeOwner == msg.sender,
+            "Token: Owner can change minter"
+        );
+        require(
+            _minters.length == _isMinter.length,
+            "Token: Array mismatch"
+        );
+
+        for (uint256 i = 0; i < _minters.length; i++) {
+            tokenTypes_[_tokenId].allowedMinters[_minters[i]] = _isMinter[i];
+        }
+    }
+
+    function transferTypeOwnership(bytes32 _tokenId, address _newOwner) external {
+        require(
+            tokenTypes_[_tokenId].typeOwner == msg.sender,
+            "Token: Owner can change minter"
+        );
+
+        tokenTypes_[_tokenId].typeOwner = _newOwner;
+    }
 }
